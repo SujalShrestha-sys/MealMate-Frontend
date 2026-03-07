@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import MenuFilters from "../components/menu/MenuFilters";
@@ -17,10 +17,16 @@ const MenuPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  // Reset page on filter change
-  useEffect(() => {
+  // Handlers for filter/search changes
+  const handleCategoryChange = (category) => {
+    setActiveCategory(category);
     setCurrentPage(1);
-  }, [activeCategory, searchQuery]);
+  };
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   const categories = [
     "All",
@@ -79,10 +85,10 @@ const MenuPage = () => {
         {/* Search & Filter - Separated Component (No Sticky) */}
         <MenuFilters
           activeCategory={activeCategory}
-          setActiveCategory={setActiveCategory}
+          setActiveCategory={handleCategoryChange}
           categories={categories}
           searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
+          setSearchQuery={handleSearchChange}
         />
 
         {/* Grid */}

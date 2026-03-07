@@ -68,7 +68,7 @@ const FoodDetailsPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12">
               {/* Left Column: Image Gallery (Span 7) */}
               <div className="lg:col-span-7 flex flex-col justify-center">
-                <ImageGallery product={product} />
+                <ImageGallery key={product.id} product={product} />
               </div>
 
               {/* Right Column: Details (Span 5) */}

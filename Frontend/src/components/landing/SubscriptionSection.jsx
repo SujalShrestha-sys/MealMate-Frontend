@@ -54,7 +54,7 @@ const SubscriptionSection = () => {
           {/* Left - Large Illustration */}
           <div className="flex justify-center md:justify-start">
             <img
-              src="/src/assets/images/subscription_illustration.png"
+              src="/images/subscription_illustration.png"
               alt="Meal plan subscription"
               className="w-full max-w-xl md:max-w-lg h-auto rounded-xl shadow-lg border border-gray-200"
             />

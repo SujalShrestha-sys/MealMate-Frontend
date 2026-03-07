@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { products } from "../../data/products";
 
 const ImageGallery = ({ product }) => {
@@ -6,13 +6,6 @@ const ImageGallery = ({ product }) => {
     product ? product.image : null,
   );
 
-  // Reset selected image when product changes
-  useEffect(() => {
-    if (product) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedImage(product.image);
-    }
-  }, [product]);
 
   // Mock gallery images: Use current product image + 3 others
   const galleryImages = product

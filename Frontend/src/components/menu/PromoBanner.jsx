@@ -1,9 +1,6 @@
 import React from "react";
 import { ArrowRight, Star, ShieldCheck, Clock } from "lucide-react";
 
-// Import local images
-import khaltiLogo from "../../assets/images/khalti_logo.svg";
-import burgerCombo from "../../assets/images/burger_combo.jpg";
 
 const PromoBanner = () => {
   return (
@@ -93,7 +90,7 @@ const PromoBanner = () => {
 
               {/* FOOD IMAGE */}
               <img
-                src={burgerCombo}
+                src="/images/burger_combo.jpg"
                 alt="Meal"
                 className="w-full h-44 rounded-md object-cover"
               />
@@ -122,7 +119,7 @@ const PromoBanner = () => {
 
                   <div className="flex items-center gap-3">
                     <img
-                      src={khaltiLogo}
+                      src="/images/khalti_logo.svg"
                       alt="Khalti"
                       className="h-8 object-contain rounded-md shadow-sm"
                     />

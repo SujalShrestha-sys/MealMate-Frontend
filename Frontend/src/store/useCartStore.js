@@ -6,9 +6,6 @@ import { products } from '../data/products';
  * This manages the shopping cart state globally.
  * It stores items as an object for fast lookups and provides helper functions
  * to calculate totals and manage quantities.
- * 
- * Beginner Tip: We use an object { productId: quantity } because it's easier 
- * to find and update items compared to an array.
  */
 const useCartStore = create((set, get) => ({
   // items: { 1: 2, 5: 1 } where 1 and 5 are product IDs

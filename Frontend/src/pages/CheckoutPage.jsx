@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, ArrowLeft, Info } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react"
+import { ArrowLeft } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
+import toast from 'react-hot-toast';
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import Button from "../components/common/Button";
@@ -36,19 +37,28 @@ const CheckoutPage = () => {
 
   const handleKhaltiPayment = () => {
     if (!selectedSlot) {
-      alert("Please select a pickup slot first!");
+      toast.error("Please select a pickup slot first!");
       return;
     }
-    console.log("Redirecting to Khalti...", { cartItems, selectedSlot });
+
+    // Simulate payment process
+    const loadingToast = toast.loading("Connecting to Khalti...");
+
+    setTimeout(() => {
+      toast.dismiss(loadingToast);
+      toast.success("Payment Received!");
+      navigate("/order-success", { state: { selectedSlot } });
+    }, 1500);
   };
 
   const handleCashPayment = () => {
     if (!selectedSlot) {
-      alert("Please select a pickup slot first!");
+      toast.error("Please select a pickup slot first!");
       return;
     }
-    alert("Order confirmed! Please pay on pickup.");
-    console.log("Cash order confirmed", { cartItems, selectedSlot });
+
+    toast.success("Order confirmed!");
+    navigate("/order-success", { state: { selectedSlot } });
   };
 
   return (

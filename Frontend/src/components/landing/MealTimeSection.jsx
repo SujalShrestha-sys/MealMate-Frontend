@@ -50,7 +50,7 @@ const MealTimeSection = () => {
           {/* Left – Image */}
           <div className="relative flex justify-center md:justify-end">
             <img
-              src="/src/assets/images/meal_time_lifestyle.png"
+              src="/images/meal_time_lifestyle.png"
               alt="Flexible campus dining"
               className="w-full max-w-md md:max-w-lg object-cover rounded-xl border border-slate-200"
             />

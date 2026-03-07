@@ -3,7 +3,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, UtensilsCrossed } from 'l
 
 const Footer = () => {
     return (
-        <footer className="bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white py-16 mt-12" id="contact">
+        <footer className="bg-linear-to-br from-green-600 via-green-700 to-green-800 text-white py-16 mt-12" id="contact">
             <div className="container mx-auto px-4 max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Company Info */}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ShieldCheck, Wallet, Landmark, CheckCircle2 } from 'lucide-react';
 
 const PaymentMethods = ({ onPayKhalti, onPayCash }) => {

@@ -31,7 +31,7 @@ const RevolutionizingSection = () => {
           <div className="relative flex justify-center">
             <div className="relative shadow-xl rounded-xl">
               <img
-                src="/src/assets/images/dashboard_mockup.png"
+                src="/images/dashboard_mockup.png"
                 alt="MealMate Dashboard"
                 className="w-full max-w-md md:max-w-lg object-cover rounded-md"
               />

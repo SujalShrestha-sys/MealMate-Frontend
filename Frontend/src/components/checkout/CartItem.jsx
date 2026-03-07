@@ -1,6 +1,6 @@
 import React from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 const CartItem = ({ item, updateQuantity }) => {
   const { dish, quantity } = item;
@@ -14,7 +14,7 @@ const CartItem = ({ item, updateQuantity }) => {
       className="group flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 hover:border-green-600/30 transition-all duration-300 shadow-sm"
     >
       {/* Product Image */}
-      <div className="relative w-22 h-22 flex-shrink-0">
+      <div className="relative w-22 h-22 shrink-0">
         <img
           src={dish.imageUrl}
           alt={dish.name}

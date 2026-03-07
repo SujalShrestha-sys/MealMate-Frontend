@@ -85,7 +85,7 @@ const HeroSection = () => {
           <div className="relative flex justify-center">
             <div className="relative rounded-3xl bg-white/80 backdrop-blur-xl border border-slate-200 shadow-xl p-6">
               <img
-                src="/src/assets/images/restaurent_canteen.jpg"
+                src="/images/restaurent_canteen.jpg"
                 alt="Campus dining illustration"
                 className=" w-full max-w-lg object-contain transform rotate-y-[-8deg] rotate-x-8 shadow-xl rounded-lg"
               />

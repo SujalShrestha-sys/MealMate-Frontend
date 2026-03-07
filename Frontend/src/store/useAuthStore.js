@@ -4,8 +4,6 @@ import { create } from 'zustand';
  * useAuthStore
  * This is a global state store using Zustand.
  * It manages the authentication status of the user across the entire application.
- * 
- * Beginner Tip: Think of this as a shared "box" of data that any component can look inside.
  */
 const useAuthStore = create((set) => ({
   // The initial state: user is not logged in by default
