@@ -1,58 +1,78 @@
-import React, { useState, useMemo } from 'react';
-import { User, Mail, Lock, Eye, EyeOff, Check } from 'lucide-react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import AuthLayout from './shared/AuthLayout';
-import AuthInput from './shared/AuthInput';
-import AuthButton from './shared/AuthButton';
-import toast from 'react-hot-toast';
-import authService from '../../api/services/auth.service';
+import React, { useState, useMemo } from "react";
+import { User, Mail, Lock, Eye, EyeOff, Check } from "lucide-react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import AuthLayout from "./shared/AuthLayout";
+import AuthInput from "./shared/AuthInput";
+import AuthButton from "./shared/AuthButton";
+import toast from "react-hot-toast";
+import authService from "../../api/services/auth.service";
 
 const roleConfigs = {
   student: {
-    title: <>Join the<br /><span className="text-emerald-300">MealMate family.</span></>,
-    subtitle: "Create your student account and start ordering fresh meals in minutes.",
+    title: (
+      <>
+        Join the
+        <br />
+        <span className="text-emerald-300">MealMate family.</span>
+      </>
+    ),
+    subtitle:
+      "Create your student account and start ordering fresh meals in minutes.",
     image: "/images/Background_3.jpg",
     benefits: [
-      'Skip the canteen queue forever',
-      'Pre-order meals ahead of time',
-      'Track your daily nutrition'
+      "Skip the canteen queue forever",
+      "Pre-order meals ahead of time",
+      "Track your daily nutrition",
     ],
     welcomeTitle: "Student Registration",
-    welcomeSubtitle: "Join 1000+ students already saving time with MealMate."
+    welcomeSubtitle: "Join 1000+ students already saving time with MealMate.",
   },
   teacher: {
-    title: <>Excellence in dining for <br /><span className="text-emerald-300">our academic staff.</span></>,
-    subtitle: "Register your faculty account for priority service and exclusive staff menus.",
+    title: (
+      <>
+        Excellence in dining for <br />
+        <span className="text-emerald-300">our academic staff.</span>
+      </>
+    ),
+    subtitle:
+      "Register your faculty account for priority service and exclusive staff menus.",
     image: "/images/Background_3.jpg",
     benefits: [
-      'Faculty-exclusive dining areas',
-      'Priority pickup windows',
-      'Streamlined monthly billing'
+      "Faculty-exclusive dining areas",
+      "Priority pickup windows",
+      "Streamlined monthly billing",
     ],
     welcomeTitle: "Faculty Sign Up",
-    welcomeSubtitle: "Create your professional account for priority campus dining."
+    welcomeSubtitle:
+      "Create your professional account for priority campus dining.",
   },
   admin: {
-    title: <>Secure access for <br /><span className="text-emerald-300">campus administrators.</span></>,
-    subtitle: "Create your administrative account to oversee dining operations and analytics.",
+    title: (
+      <>
+        Secure access for <br />
+        <span className="text-emerald-300">campus administrators.</span>
+      </>
+    ),
+    subtitle:
+      "Create your administrative account to oversee dining operations and analytics.",
     image: "/images/Background_3.jpg",
     benefits: [
-      'Real-time operations tracking',
-      'Menu & vendor management',
-      'Advanced data analytics'
+      "Real-time operations tracking",
+      "Menu & vendor management",
+      "Advanced data analytics",
     ],
     welcomeTitle: "Admin Registration",
-    welcomeSubtitle: "Standardized administrative access for dining management."
-  }
+    welcomeSubtitle:
+      "Standardized administrative access for dining management.",
+  },
 };
-
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -86,10 +106,12 @@ const SignUp = () => {
       const response = await authService.register({
         name: formData.fullName,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
       });
 
-      toast.success(response.message || "Registered successfully! Please login.");
+      toast.success(
+        response.message || "Registered successfully! Please login.",
+      );
       navigate(`/login?role=${role}`);
     } catch (error) {
       console.error("Registration failed:", error);
@@ -99,7 +121,7 @@ const SignUp = () => {
   // Password strength
   const passwordStrength = useMemo(() => {
     const pw = formData.password;
-    if (!pw) return { level: 0, label: '', color: 'bg-gray-200' };
+    if (!pw) return { level: 0, label: "", color: "bg-gray-200" };
     let score = 0;
     if (pw.length >= 6) score++;
     if (pw.length >= 10) score++;
@@ -107,11 +129,11 @@ const SignUp = () => {
     if (/[0-9]/.test(pw)) score++;
     if (/[^A-Za-z0-9]/.test(pw)) score++;
 
-    if (score <= 1) return { level: 1, label: 'Weak', color: 'bg-red-400' };
-    if (score <= 2) return { level: 2, label: 'Fair', color: 'bg-orange-400' };
-    if (score <= 3) return { level: 3, label: 'Good', color: 'bg-yellow-400' };
-    if (score <= 4) return { level: 4, label: 'Strong', color: 'bg-green-400' };
-    return { level: 5, label: 'Very Strong', color: 'bg-green-600' };
+    if (score <= 1) return { level: 1, label: "Weak", color: "bg-red-400" };
+    if (score <= 2) return { level: 2, label: "Fair", color: "bg-orange-400" };
+    if (score <= 3) return { level: 3, label: "Good", color: "bg-yellow-400" };
+    if (score <= 4) return { level: 4, label: "Strong", color: "bg-green-400" };
+    return { level: 5, label: "Very Strong", color: "bg-green-600" };
   }, [formData.password]);
 
   const leftContent = (
@@ -139,7 +161,9 @@ const SignUp = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           {role} Portal
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{config.welcomeTitle}</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          {config.welcomeTitle}
+        </h2>
         <p className="text-gray-500">{config.welcomeSubtitle}</p>
       </div>
 
@@ -167,7 +191,7 @@ const SignUp = () => {
 
         <AuthInput
           label="Password"
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           name="password"
           placeholder="••••••••"
           value={formData.password}
@@ -192,18 +216,23 @@ const SignUp = () => {
               {[1, 2, 3, 4, 5].map((i) => (
                 <div
                   key={i}
-                  className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${i <= passwordStrength.level ? passwordStrength.color : 'bg-gray-200'
-                    }`}
+                  className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                    i <= passwordStrength.level
+                      ? passwordStrength.color
+                      : "bg-gray-200"
+                  }`}
                 />
               ))}
             </div>
-            <span className="text-xs font-medium text-gray-500">{passwordStrength.label}</span>
+            <span className="text-xs font-medium text-gray-500">
+              {passwordStrength.label}
+            </span>
           </div>
         )}
 
         <AuthInput
           label="Confirm Password"
-          type={showConfirmPassword ? 'text' : 'password'}
+          type={showConfirmPassword ? "text" : "password"}
           name="confirmPassword"
           placeholder="••••••••"
           value={formData.confirmPassword}
@@ -230,12 +259,18 @@ const SignUp = () => {
             required
           />
           <span className="text-sm text-gray-500 leading-snug">
-            I agree to the{' '}
-            <a href="#" className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200">
+            I agree to the{" "}
+            <a
+              href="#"
+              className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200"
+            >
               Terms of Service
-            </a>{' '}
-            and{' '}
-            <a href="#" className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200">
+            </a>{" "}
+            and{" "}
+            <a
+              href="#"
+              className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200"
+            >
               Privacy Policy
             </a>
           </span>
@@ -244,7 +279,7 @@ const SignUp = () => {
         <AuthButton type="submit">Create Account</AuthButton>
       </form>
       <p className="text-center text-gray-500 mt-7">
-        Already have an account?{' '}
+        Already have an account?{" "}
         <Link
           to={`/login?role=${role}`}
           className="text-green-600 font-semibold hover:text-green-700 transition-colors duration-200"

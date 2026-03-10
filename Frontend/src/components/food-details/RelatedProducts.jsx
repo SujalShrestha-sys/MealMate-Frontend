@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
-import { products } from "../../data/products";
+import { ChevronLeft, Loader2 } from "lucide-react";
+import dishService from "../../api/services/dish.service";
 
 const RelatedProducts = ({ currentProduct }) => {
-  if (!currentProduct) return null;
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const relatedProducts = products
-    .filter(
-      (p) =>
-        p.category === currentProduct.category && p.id !== currentProduct.id,
-    )
-    .slice(0, 5);
+  useEffect(() => {
+    if (!currentProduct?.category?.name) return;
+
+    const fetchRelated = async () => {
+      setIsLoading(true);
+      try {
+        const response = await dishService.getByCategory(currentProduct.category.name, 1, 6);
+        if (response.success) {
+          // Filter out the current product itself
+          setRelatedProducts(response.data.filter(p => p.id !== currentProduct.id));
+        }
+      } catch (error) {
+        console.error("Failed to fetch related products:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRelated();
+  }, [currentProduct]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-10">
+        <Loader2 className="w-8 h-8 text-green-600 animate-spin" />
+      </div>
+    );
+  }
 
   if (relatedProducts.length === 0) return null;
 
@@ -30,15 +53,10 @@ const RelatedProducts = ({ currentProduct }) => {
           >
             <div className="aspect-4/3 bg-slate-100 relative">
               <img
-                src={related.image}
+                src={related.imageUrl || related.image || "/images/placeholder.jpg"}
                 alt={related.name}
                 className="w-full h-full object-cover"
               />
-              {related.badge && (
-                <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[10px] font-bold px-2 py-0.5 rounded-full text-slate-700 shadow-sm">
-                  {related.badge}
-                </span>
-              )}
             </div>
             <div className="p-4">
               <h4 className="font-bold text-slate-800 text-sm truncate mb-1">

@@ -30,7 +30,11 @@ const ResetPassword = () => {
     }
 
     try {
-      await authService.resetPassword(token, formData.password, formData.confirmPassword);
+      await authService.resetPassword(
+        token,
+        formData.password,
+        formData.confirmPassword,
+      );
       toast.success("Password reset successful! Please login.");
       navigate("/login");
     } catch (error) {

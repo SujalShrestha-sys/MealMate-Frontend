@@ -160,7 +160,9 @@ const PlansPage = () => {
               <button
                 onClick={() => setPlanType("weekly")}
                 className={`relative z-10 px-8 py-3 rounded-xl font-bold text-sm transition-colors duration-300 ${
-                  planType === "weekly" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+                  planType === "weekly"
+                    ? "text-slate-900"
+                    : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 {planType === "weekly" && (
@@ -175,7 +177,9 @@ const PlansPage = () => {
               <button
                 onClick={() => setPlanType("monthly")}
                 className={`relative z-10 px-8 py-3 rounded-xl font-bold text-sm transition-colors duration-300 ${
-                  planType === "monthly" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+                  planType === "monthly"
+                    ? "text-slate-900"
+                    : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 {planType === "monthly" && (

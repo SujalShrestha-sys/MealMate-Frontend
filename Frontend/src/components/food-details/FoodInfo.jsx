@@ -9,7 +9,7 @@ const FoodInfo = ({ product }) => {
       <div className="flex justify-between items-start mb-4">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-green-50 text-green-700 text-xs font-semibold uppercase tracking-wider mb-2">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-          {product.category}
+          {product.categoryName}
         </div>
         <div className="flex gap-2">
           <button className="p-2 rounded-full border border-slate-100 text-slate-400 hover:text-red-500 hover:bg-red-50 hover:border-red-100 transition-all active:scale-95">

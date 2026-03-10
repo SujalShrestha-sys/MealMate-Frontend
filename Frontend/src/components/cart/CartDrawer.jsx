@@ -9,14 +9,13 @@ const CartDrawer = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const {
     getCartCount,
-    getCartDetails,
+    items,
     getCartTotal,
     updateQuantity,
     clearCart
   } = useCartStore();
 
   const cartCount = getCartCount();
-  const cartDetails = getCartDetails();
   const cartTotal = getCartTotal();
 
   return (
@@ -60,8 +59,8 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
             {/* Cart Items List */}
             <div className="flex-1 overflow-y-auto p-5 space-y-5">
-              {cartDetails.length > 0 ? (
-                cartDetails.map((item) => (
+              {items.length > 0 ? (
+                items.map((item) => (
                   <motion.div
                     key={item.id}
                     layout
@@ -73,12 +72,12 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       className="w-16 h-16 rounded-xl overflow-hidden border border-slate-100 shrink-0 shadow-sm cursor-pointer"
                       onClick={() => {
                         onClose();
-                        navigate(`/food/${item.id}`);
+                        navigate(`/food/${item.dishId}`);
                       }}
                     >
                       <img
-                        src={item.imageUrl}
-                        alt={item.name}
+                        src={item.dish.imageUrl || item.dish.image || "/images/placeholder.jpg"}
+                        alt={item.dish.name}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       />
                     </div>
@@ -89,33 +88,33 @@ const CartDrawer = ({ isOpen, onClose }) => {
                             className="font-extrabold text-slate-800 text-[13px] leading-tight hover:text-green-700 transition-colors tracking-tight cursor-pointer"
                             onClick={() => {
                               onClose();
-                              navigate(`/food/${item.id}`);
+                              navigate(`/food/${item.dishId}`);
                             }}
                           >
-                            {item.name}
+                            {item.dish.name}
                           </h3>
-                          <span className="text-[13px] font-bold text-slate-400 ml-2">Rs. {item.price}</span>
+                          <span className="text-[13px] font-bold text-slate-400 ml-2">Rs. {item.dish.price}</span>
                         </div>
-                        <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1 font-medium tracking-wide">{item.category}</p>
+                        <p className="text-[10px] text-slate-400 mt-0.5 line-clamp-1 font-medium tracking-wide">{item.dish.category?.name || "Uncategorized"}</p>
                       </div>
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-full px-2 py-1">
                           <button
-                            onClick={() => updateQuantity(item.id, -1)}
+                            onClick={() => updateQuantity(item.dishId, -1)}
                             className="p-1 rounded-full hover:bg-white text-slate-400 hover:text-red-500 transition-colors active:scale-90"
                           >
                             <Minus size={12} />
                           </button>
                           <span className="text-xs font-bold w-6 text-center text-slate-700">{item.quantity}</span>
                           <button
-                            onClick={() => updateQuantity(item.id, 1)}
+                            onClick={() => updateQuantity(item.dishId, 1)}
                             className="p-1 rounded-full hover:bg-white text-slate-400 hover:text-green-600 transition-colors active:scale-90"
                           >
                             <Plus size={12} />
                           </button>
                         </div>
                         <button
-                          onClick={() => updateQuantity(item.id, -item.quantity)}
+                          onClick={() => updateQuantity(item.dishId, -item.quantity)}
                           className="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors uppercase tracking-widest"
                         >
                           Remove
@@ -147,7 +146,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
             </div>
 
             {/* Footer */}
-            {cartDetails.length > 0 && (
+            {items.length > 0 && (
               <div className="p-6 border-t border-slate-100 bg-slate-50/80 backdrop-blur-md">
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between items-center text-slate-400 font-extrabold text-[9px] uppercase tracking-[0.2em]">

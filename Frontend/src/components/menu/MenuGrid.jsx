@@ -1,7 +1,7 @@
 import React from "react";
 import MenuCard from "./MenuCard";
 
-const MenuGrid = ({ products, cart, updateQuantity }) => {
+const MenuGrid = ({ products }) => {
   if (products.length === 0) {
     return (
       <div className="text-center py-18 animate-fade-in-up">
@@ -25,8 +25,6 @@ const MenuGrid = ({ products, cart, updateQuantity }) => {
         >
           <MenuCard
             product={product}
-            quantity={cart[product.id] || 0}
-            updateQuantity={updateQuantity}
           />
         </div>
       ))}

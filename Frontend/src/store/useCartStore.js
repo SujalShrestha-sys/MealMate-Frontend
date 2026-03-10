@@ -1,84 +1,134 @@
 import { create } from 'zustand';
-import { products } from '../data/products';
+import cartService from '../api/services/cart.service';
+import toast from 'react-hot-toast';
 
 /**
  * useCartStore
- * This manages the shopping cart state globally.
- * It stores items as an object for fast lookups and provides helper functions
- * to calculate totals and manage quantities.
+ * This manages the shopping cart state.
+ * It syncs with the backend when the user is logged in.
  */
 const useCartStore = create((set, get) => ({
-  // items: { 1: 2, 5: 1 } where 1 and 5 are product IDs
-  items: {},
+  items: [], // [{ id, cartItemId, dish, quantity }]
+  isLoading: false,
 
   /**
-   * addItem: Adds one to the quantity of a product.
+   * fetchCart: Syncs local state with backend
    */
-  addItem: (productId) => set((state) => ({
-    items: {
-      ...state.items,
-      [productId]: (state.items[productId] || 0) + 1
+  fetchCart: async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    set({ isLoading: true });
+    try {
+      const response = await cartService.getCart();
+      if (response.success) {
+        set({ items: response.data.items });
+      }
+    } catch (error) {
+      console.error("Failed to fetch cart:", error);
+    } finally {
+      set({ isLoading: false });
     }
-  })),
+  },
 
   /**
-   * removeItem: Subtracts one from the quantity or removes it if it hits zero.
+   * addItem: Adds a dish to the cart
    */
-  removeItem: (productId) => set((state) => {
-    const newQty = (state.items[productId] || 0) - 1;
-    const newItems = { ...state.items };
-    
-    if (newQty <= 0) {
-      delete newItems[productId];
-    } else {
-      newItems[productId] = newQty;
+  addItem: async (dishId, quantity = 1) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      toast.error("Please login to add items to cart");
+      return;
     }
-    
-    return { items: newItems };
-  }),
+
+    try {
+      const response = await cartService.addToCart(dishId, quantity);
+      if (response.success) {
+        await get().fetchCart();
+        toast.success("Item added to cart");
+      }
+    } catch (error) {
+      console.error("Add to cart failed:", error);
+    }
+  },
 
   /**
-   * updateQuantity: Manually sets the quantity of an item.
+   * updateQuantity: Updates quantity of a cart item
    */
-  updateQuantity: (productId, delta) => {
-    if (delta > 0) get().addItem(productId);
-    else get().removeItem(productId);
+  updateQuantity: async (dishId, delta) => {
+    const { items } = get();
+    const item = items.find(i => i.dishId === dishId);
+
+    if (!item) {
+      if (delta > 0) return get().addItem(dishId, delta);
+      return;
+    }
+
+    const newQty = item.quantity + delta;
+
+    try {
+      if (newQty <= 0) {
+        const response = await cartService.removeCartItem(item.id);
+        if (response.success) toast.success("Item removed");
+      } else {
+        await cartService.updateCartItem(item.id, newQty);
+      }
+      await get().fetchCart();
+    } catch (error) {
+      console.error("Update quantity failed:", error);
+    }
+  },
+
+  /**
+   * removeItem: Removes item by ID (cartItemId or dishId)
+   */
+  removeItem: async (cartItemId) => {
+    try {
+      const response = await cartService.removeCartItem(cartItemId);
+      if (response.success) {
+        await get().fetchCart();
+        toast.success("Item removed");
+      }
+    } catch (error) {
+      console.error("Remove item failed:", error);
+    }
   },
 
   /**
    * clearCart: Empties the entire cart.
    */
-  clearCart: () => set({ items: {} }),
-
-  /**
-   * getCartDetails: Returns a list of full product objects with their quantities.
-   * Useful for displaying the items in the Navbar or Checkout.
-   */
-  getCartDetails: () => {
-    const { items } = get();
-    return Object.keys(items).map(id => {
-      const product = products.find(p => p.id === parseInt(id));
-      return {
-        ...product,
-        quantity: items[id]
-      };
-    }).filter(item => item !== undefined);
+  clearCart: async () => {
+    try {
+      const response = await cartService.clearCart();
+      if (response.success) {
+        set({ items: [] });
+        toast.success("Cart cleared");
+      }
+    } catch (error) {
+      console.error("Clear cart failed:", error);
+    }
   },
 
   /**
-   * getCartTotal: Calculates the total price of all items in the cart.
+   * getCartTotal: Calculates total price.
    */
   getCartTotal: () => {
-    const details = get().getCartDetails();
-    return details.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    return get().items.reduce((acc, item) => acc + (item.dish.price * item.quantity), 0);
   },
 
   /**
-   * getCartCount: Returns the total number of items in the cart.
+   * getCartCount: Returns total quantity.
    */
   getCartCount: () => {
-    const { items } = get();
-    return Object.values(items).reduce((acc, qty) => acc + qty, 0);
+    return get().items.reduce((acc, item) => acc + item.quantity, 0);
+  },
+
+  /**
+   * getQuantity: Returns quantity for a specific dishId
+   */
+  getQuantity: (dishId) => {
+    const item = get().items.find(i => i.dishId === dishId);
+    return item ? item.quantity : 0;
   }
 }));
 

@@ -10,13 +10,17 @@ import Button from "../components/common/Button";
 const CartPage = () => {
   const navigate = useNavigate();
   const {
-    getCartDetails,
+    items,
     getCartTotal,
     updateQuantity,
-    clearCart
+    clearCart,
+    fetchCart
   } = useCartStore();
 
-  const cartDetails = getCartDetails();
+  React.useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
+
   const cartTotal = getCartTotal();
 
   return (
@@ -40,8 +44,8 @@ const CartPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Items List */}
             <div className="lg:col-span-2 space-y-4">
-              {cartDetails.length > 0 ? (
-                cartDetails.map((item) => (
+              {items.length > 0 ? (
+                items.map((item) => (
                   <motion.div
                     key={item.id}
                     layout
@@ -51,11 +55,11 @@ const CartPage = () => {
                   >
                     <div
                       className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 cursor-pointer"
-                      onClick={() => navigate(`/food/${item.id}`)}
+                      onClick={() => navigate(`/food/${item.dishId}`)}
                     >
                       <img
-                        src={item.imageUrl}
-                        alt={item.name}
+                        src={item.dish.imageUrl || item.dish.image || "/images/placeholder.jpg"}
+                        alt={item.dish.name}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                       />
                     </div>
@@ -64,25 +68,25 @@ const CartPage = () => {
                       <div className="flex justify-between items-start mb-1">
                         <h3
                           className="font-bold text-slate-800 text-lg hover:text-green-600 transition-colors cursor-pointer"
-                          onClick={() => navigate(`/food/${item.id}`)}
+                          onClick={() => navigate(`/food/${item.dishId}`)}
                         >
-                          {item.name}
+                          {item.dish.name}
                         </h3>
-                        <span className="font-bold text-slate-900">Rs. {item.price * item.quantity}</span>
+                        <span className="font-bold text-slate-900">Rs. {item.dish.price * item.quantity}</span>
                       </div>
-                      <p className="text-sm text-slate-400 mb-4">{item.category}</p>
+                      <p className="text-sm text-slate-400 mb-4">{item.dish.category?.name || "Uncategorized"}</p>
 
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-full px-3 py-1.5">
                           <button
-                            onClick={() => updateQuantity(item.id, -1)}
+                            onClick={() => updateQuantity(item.dishId, -1)}
                             className="p-1 rounded-full hover:bg-white text-slate-400 hover:text-red-500 transition-colors active:scale-90"
                           >
                             <Minus size={14} />
                           </button>
                           <span className="text-sm font-bold w-6 text-center text-slate-700">{item.quantity}</span>
                           <button
-                            onClick={() => updateQuantity(item.id, 1)}
+                            onClick={() => updateQuantity(item.dishId, 1)}
                             className="p-1 rounded-full hover:bg-white text-slate-400 hover:text-green-600 transition-colors active:scale-90"
                           >
                             <Plus size={14} />
@@ -90,7 +94,7 @@ const CartPage = () => {
                         </div>
 
                         <button
-                          onClick={() => updateQuantity(item.id, -item.quantity)}
+                          onClick={() => updateQuantity(item.dishId, -item.quantity)}
                           className="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors uppercase tracking-widest flex items-center gap-1.5"
                         >
                           <Trash2 size={14} />
@@ -119,7 +123,7 @@ const CartPage = () => {
             </div>
 
             {/* Summary Sidebar */}
-            {cartDetails.length > 0 && (
+            {items.length > 0 && (
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-4xl p-8 border border-slate-100 shadow-sm sticky top-28">
                   <h2 className="text-xl font-bold text-slate-900 mb-6 tracking-tight">Summary</h2>

@@ -1,26 +1,26 @@
-import React from 'react';
-import { Clock, CheckCircle, CreditCard, Sparkles } from 'lucide-react';
+import React from "react";
+import { Clock, CheckCircle, CreditCard, Sparkles } from "lucide-react";
 
 const benefits = [
   {
     icon: Clock,
-    title: 'Flexible Timing',
-    text: 'Enjoy meals whenever it fits your schedule — no fixed hours.',
+    title: "Flexible Timing",
+    text: "Enjoy meals whenever it fits your schedule — no fixed hours.",
   },
   {
     icon: CheckCircle,
-    title: 'Smart Pre-Ordering',
-    text: 'Order ahead and pick up right when your meal is ready.',
+    title: "Smart Pre-Ordering",
+    text: "Order ahead and pick up right when your meal is ready.",
   },
   {
     icon: CreditCard,
-    title: 'Easy Payments',
-    text: 'Pay your way with meal plans, wallets, or cards.',
+    title: "Easy Payments",
+    text: "Pay your way with meal plans, wallets, or cards.",
   },
   {
     icon: Sparkles,
-    title: 'Personalized Meals',
-    text: 'Customize meals to match your taste and dietary needs.',
+    title: "Personalized Meals",
+    text: "Customize meals to match your taste and dietary needs.",
   },
 ];
 
@@ -28,7 +28,6 @@ const MealTimeSection = () => {
   return (
     <section className="py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4">
-
         {/* Centered Header */}
         <div className="text-center max-w-4xl mx-auto mb-16">
           <span className="text-sm font-semibold uppercase tracking-wide text-green-600">
@@ -40,13 +39,13 @@ const MealTimeSection = () => {
           </h2>
 
           <p className="mt-4 text-lg text-slate-600 leading-relaxed">
-            MealMate adapts to your routine — fast, flexible, and fully personalized. Perfect for busy campus life or relaxed dining.
+            MealMate adapts to your routine — fast, flexible, and fully
+            personalized. Perfect for busy campus life or relaxed dining.
           </p>
         </div>
 
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-
           {/* Left – Image */}
           <div className="relative flex justify-center md:justify-end">
             <img
@@ -84,7 +83,6 @@ const MealTimeSection = () => {
               );
             })}
           </div>
-
         </div>
       </div>
     </section>

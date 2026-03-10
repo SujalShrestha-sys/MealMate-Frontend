@@ -13,7 +13,7 @@ const FoodActions = ({ product, quantity, updateQuantity }) => {
             Total Price
           </span>
           <span className="text-2xl font-bold text-slate-800">
-            NPR - {product.price}
+            NPR {product.price}
           </span>
         </div>
 

@@ -11,45 +11,62 @@ import toast from "react-hot-toast";
 
 const roleConfigs = {
   student: {
-    title: <>Skip the queue, <br /><span className="text-emerald-300">savor every bite.</span></>,
-    subtitle: "Order fresh meals from your college canteen — no waiting, no hassle.",
+    title: (
+      <>
+        Skip the queue, <br />
+        <span className="text-emerald-300">savor every bite.</span>
+      </>
+    ),
+    subtitle:
+      "Order fresh meals from your college canteen — no waiting, no hassle.",
     image: "/images/Background_2.jpg",
     stats: [
       { label: "Happy Students", value: "1000+" },
       { label: "Meals Daily", value: "Fresh" },
-      { label: "Avg. Pickup", value: "5 min" }
+      { label: "Avg. Pickup", value: "5 min" },
     ],
     welcomeTitle: "Student Login",
-    welcomeSubtitle: "Access your personalized student meal dashboard."
+    welcomeSubtitle: "Access your personalized student meal dashboard.",
   },
 
   teacher: {
-    title: <>Priority dining for <br /><span className="text-emerald-300">our dedicated faculty.</span></>,
-    subtitle: "Enjoy exclusive menus and priority pickup designed for staff convenience.",
+    title: (
+      <>
+        Priority dining for <br />
+        <span className="text-emerald-300">our dedicated faculty.</span>
+      </>
+    ),
+    subtitle:
+      "Enjoy exclusive menus and priority pickup designed for staff convenience.",
     image: "/images/Background_2.jpg",
     stats: [
       { label: "Faculty Members", value: "200+" },
       { label: "Priority Service", value: "Elite" },
-      { label: "Staff Lounges", value: "4+" }
+      { label: "Staff Lounges", value: "4+" },
     ],
     welcomeTitle: "Teacher Portal",
-    welcomeSubtitle: "Sign in to manage your faculty meal preferences."
+    welcomeSubtitle: "Sign in to manage your faculty meal preferences.",
   },
 
   admin: {
-    title: <>Full control over <br /><span className="text-emerald-300">campus operations.</span></>,
-    subtitle: "Manage menus, track performance, and optimize the dining experience.",
+    title: (
+      <>
+        Full control over <br />
+        <span className="text-emerald-300">campus operations.</span>
+      </>
+    ),
+    subtitle:
+      "Manage menus, track performance, and optimize the dining experience.",
     image: "/images/Background_2.jpg",
     stats: [
       { label: "Live Orders", value: "24/7" },
       { label: "Inventory", value: "Smart" },
-      { label: "Analytics", value: "Pro" }
+      { label: "Analytics", value: "Pro" },
     ],
     welcomeTitle: "Admin Console",
-    welcomeSubtitle: "Secure access to MealMate operational controls."
-  }
+    welcomeSubtitle: "Secure access to MealMate operational controls.",
+  },
 };
-
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -67,6 +84,16 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await authService.login({ email, password });
+
+      // Check if the user's role matches the current portal role
+      const userRole = response.user.role?.toLowerCase();
+      if (userRole !== role) {
+        toast.error(
+          `Access Denied: This is the ${role} portal. You are registered as a ${userRole}.`,
+        );
+        return;
+      }
+
       login(response.user);
       toast.success(response.message || "Logged in successfully");
       navigate("/");
@@ -81,9 +108,13 @@ const Login = () => {
         <React.Fragment key={index}>
           <div>
             <p className="text-2xl font-semibold text-white">{stat.value}</p>
-            <p className="text-sm font-medium text-green-200/80">{stat.label}</p>
+            <p className="text-sm font-medium text-green-200/80">
+              {stat.label}
+            </p>
           </div>
-          {index < config.stats.length - 1 && <div className="w-px bg-white/20" />}
+          {index < config.stats.length - 1 && (
+            <div className="w-px bg-white/20" />
+          )}
         </React.Fragment>
       ))}
     </div>
@@ -101,10 +132,10 @@ const Login = () => {
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           {role} Portal
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{config.welcomeTitle}</h2>
-        <p className="text-gray-500">
-          {config.welcomeSubtitle}
-        </p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          {config.welcomeTitle}
+        </h2>
+        <p className="text-gray-500">{config.welcomeSubtitle}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -166,7 +197,7 @@ const Login = () => {
         <div className="h-px bg-gray-200 flex-1" />
       </div>
 
-      <SocialAuthButton onClick={() => { }} />
+      <SocialAuthButton onClick={() => {}} />
 
       <p className="text-center text-gray-500 mt-8">
         Don't have an account?{" "}

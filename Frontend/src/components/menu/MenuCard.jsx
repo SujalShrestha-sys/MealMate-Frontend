@@ -3,8 +3,12 @@ import Button from "../common/Button";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
 
 import { Link } from "react-router-dom";
+import useCartStore from "../../store/useCartStore";
 
-const MenuCard = ({ product, quantity = 0, updateQuantity }) => {
+const MenuCard = ({ product }) => {
+  const { getQuantity, updateQuantity } = useCartStore();
+  const quantity = getQuantity(product.id);
+
   return (
     <div className="relative group pt-12 h-full">
       <div className="bg-white rounded-4xl p-6 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-green-500/10 transition-all duration-300 h-full flex flex-col border border-slate-100 relative group-hover:-translate-y-2">
@@ -12,7 +16,7 @@ const MenuCard = ({ product, quantity = 0, updateQuantity }) => {
         <Link to={`/food/${product.id}`} className="block">
           <div className="relative -mt-16 mb-6 mx-2 rounded-2xl overflow-hidden shadow-xl shadow-green-900/5 group-hover:shadow-2xl group-hover:shadow-green-500/20 group-hover:scale-105 transition-all duration-500 h-52 bg-gray-100">
             <img
-              src={product.image}
+              src={product.imageUrl || product.image || "/images/placeholder.jpg"}
               alt={product.name}
               className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
             />

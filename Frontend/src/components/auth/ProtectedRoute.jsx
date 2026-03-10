@@ -1,6 +1,6 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import useAuthStore from '../../store/useAuthStore';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import useAuthStore from "../../store/useAuthStore";
 
 /**
  * ProtectedRoute
@@ -8,15 +8,15 @@ import useAuthStore from '../../store/useAuthStore';
  * Redirects to /login if the user is not authenticated.
  */
 export const ProtectedRoute = ({ children }) => {
-    const { isLoggedIn } = useAuthStore();
-    const location = useLocation();
+  const { isLoggedIn } = useAuthStore();
+  const location = useLocation();
 
-    if (!isLoggedIn) {
-        // Redirect to login, but save the current location to redirect back after login
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
+  if (!isLoggedIn) {
+    // Redirect to login, but save the current location to redirect back after login
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-    return children;
+  return children;
 };
 
 /**
@@ -25,14 +25,14 @@ export const ProtectedRoute = ({ children }) => {
  * Redirects to home if the user is already authenticated.
  */
 export const PublicRoute = ({ children }) => {
-    const { isLoggedIn } = useAuthStore();
-    const location = useLocation();
+  const { isLoggedIn } = useAuthStore();
+  const location = useLocation();
 
-    if (isLoggedIn) {
-        // Redirect to the page they were trying to access, or home
-        const from = location.state?.from?.pathname || "/";
-        return <Navigate to={from} replace />;
-    }
+  if (isLoggedIn) {
+    // Redirect to the page they were trying to access, or home
+    const from = location.state?.from?.pathname || "/";
+    return <Navigate to={from} replace />;
+  }
 
-    return children;
+  return children;
 };

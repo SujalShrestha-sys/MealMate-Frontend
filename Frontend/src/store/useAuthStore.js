@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 /**
  * useAuthStore
@@ -7,18 +7,18 @@ import { create } from 'zustand';
  */
 const getInitialUser = () => {
   try {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
   } catch (error) {
     console.error("Error parsing user from localStorage:", error);
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     return null;
   }
 };
 
 const useAuthStore = create((set) => ({
   // The initial state: check if token exists in localStorage
-  isLoggedIn: !!localStorage.getItem('token'),
+  isLoggedIn: !!localStorage.getItem("token"),
   user: getInitialUser(),
 
   /**
@@ -26,10 +26,10 @@ const useAuthStore = create((set) => ({
    * @param {Object} userData - Information about the logged-in user.
    */
   login: (userData) => {
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
     set({
       isLoggedIn: true,
-      user: userData
+      user: userData,
     });
   },
 
@@ -37,20 +37,21 @@ const useAuthStore = create((set) => ({
    * logout: Reverts the state to the initial logged-out status.
    */
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     set({
       isLoggedIn: false,
-      user: null
+      user: null,
     });
   },
 
   /**
    * toggleLogin: A simple helper to flip the login status (useful for testing).
    */
-  toggleLogin: () => set((state) => ({
-    isLoggedIn: !state.isLoggedIn
-  })),
+  toggleLogin: () =>
+    set((state) => ({
+      isLoggedIn: !state.isLoggedIn,
+    })),
 }));
 
 export default useAuthStore;
