@@ -6,6 +6,8 @@ import AuthInput from "./shared/AuthInput";
 import AuthButton from "./shared/AuthButton";
 import SocialAuthButton from "./shared/SocialAuthButton";
 import useAuthStore from "../../store/useAuthStore";
+import authService from "../../api/services/auth.service";
+import toast from "react-hot-toast";
 
 const roleConfigs = {
   student: {
@@ -20,6 +22,7 @@ const roleConfigs = {
     welcomeTitle: "Student Login",
     welcomeSubtitle: "Access your personalized student meal dashboard."
   },
+
   teacher: {
     title: <>Priority dining for <br /><span className="text-emerald-300">our dedicated faculty.</span></>,
     subtitle: "Enjoy exclusive menus and priority pickup designed for staff convenience.",
@@ -32,6 +35,7 @@ const roleConfigs = {
     welcomeTitle: "Teacher Portal",
     welcomeSubtitle: "Sign in to manage your faculty meal preferences."
   },
+
   admin: {
     title: <>Full control over <br /><span className="text-emerald-300">campus operations.</span></>,
     subtitle: "Manage menus, track performance, and optimize the dining experience.",
@@ -46,6 +50,7 @@ const roleConfigs = {
   }
 };
 
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,15 +59,20 @@ const Login = () => {
   const location = useLocation();
   const { login } = useAuthStore();
 
-  // Extract role from query param, default to student
   const queryParams = new URLSearchParams(location.search);
   const role = queryParams.get("role") || "student";
   const config = roleConfigs[role] || roleConfigs.student;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login({ email, role });
-    navigate("/");
+    try {
+      const response = await authService.login({ email, password });
+      login(response.user);
+      toast.success(response.message || "Logged in successfully");
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   const leftContent = (

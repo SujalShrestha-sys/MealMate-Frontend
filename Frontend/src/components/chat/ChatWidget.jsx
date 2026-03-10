@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AnimatePresence } from "motion/react";
 import ChatFab from "./ChatFab";
 import ChatPanel from "./ChatPanel";
 
@@ -17,7 +18,6 @@ const AUTO_REPLIES = [
 
 const ChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
     const [messages, setMessages] = useState([
         {
             id: 1,
@@ -38,13 +38,9 @@ const ChatWidget = () => {
         }
     };
 
-    // Close with slide-down animation
+    // Close the chat panel
     const handleClose = () => {
-        setIsClosing(true);
-        setTimeout(() => {
-            setIsOpen(false);
-            setIsClosing(false);
-        }, 200);
+        setIsOpen(false);
     };
 
     // Send a message and get an auto-reply
@@ -80,16 +76,17 @@ const ChatWidget = () => {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
 
             {/* Chat panel - only shows when open */}
-            {isOpen && (
-                <ChatPanel
-                    isClosing={isClosing}
-                    messages={messages}
-                    input={input}
-                    onInputChange={setInput}
-                    onSend={handleSend}
-                    onClose={handleClose}
-                />
-            )}
+            <AnimatePresence>
+                {isOpen && (
+                    <ChatPanel
+                        messages={messages}
+                        input={input}
+                        onInputChange={setInput}
+                        onSend={handleSend}
+                        onClose={handleClose}
+                    />
+                )}
+            </AnimatePresence>
 
             {/* Floating action button - always visible */}
             <ChatFab isOpen={isOpen} onClick={handleToggle} />

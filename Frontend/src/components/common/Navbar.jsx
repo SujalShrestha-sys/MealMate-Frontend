@@ -29,7 +29,7 @@ const Navbar = () => {
       setScrolled(window.scrollY > 20);
 
       // Active section detection
-      const sectionIds = links.map((link) => link.toLowerCase());
+      const sectionIds = links.map((link) => link.toLowerCase().replace(/\s+/g, '-'));
       const scrollPosition = window.scrollY + 100; // Offset for better detection
 
       for (const id of sectionIds) {
@@ -49,7 +49,7 @@ const Navbar = () => {
       if (window.scrollY < 100) setActiveSection("home");
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

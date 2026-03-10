@@ -13,6 +13,7 @@ import OrderTrackingPage from "./pages/OrderTrackingPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import ChatWidget from "./components/chat/ChatWidget.jsx";
 import { Toaster } from 'react-hot-toast';
+import { ProtectedRoute, PublicRoute } from "./components/auth/ProtectedRoute.jsx";
 import "./App.css";
 
 function App() {
@@ -24,19 +25,23 @@ function App() {
     <div className="min-h-screen bg-white">
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/menu" element={<MenuPage />}/>
+        <Route path="/menu" element={<MenuPage />} />
         <Route path="/plans" element={<PlansPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/order-success" element={<OrderSuccessPage />} />
-        <Route path="/order-tracking" element={<OrderTrackingPage />} />
+
+        {/* Public only routes */}
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+        <Route path="/SignUp" element={<PublicRoute><SignUp /></PublicRoute>} />
+        <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+        <Route path="/reset-password/:token" element={<PublicRoute><ResetPassword /></PublicRoute>} />
+
+        {/* Protected routes */}
+        <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        <Route path="/order-success" element={<ProtectedRoute><OrderSuccessPage /></ProtectedRoute>} />
+        <Route path="/order-tracking" element={<ProtectedRoute><OrderTrackingPage /></ProtectedRoute>} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/food/:id" element={<FoodDetailsPage />}/>
+        <Route path="/food/:id" element={<FoodDetailsPage />} />
       </Routes>
-      
+
       <Toaster
         position="top-center"
         reverseOrder={false}

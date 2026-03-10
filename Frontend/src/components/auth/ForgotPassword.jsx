@@ -4,15 +4,22 @@ import { Link } from 'react-router-dom';
 import AuthLayout from './shared/AuthLayout';
 import AuthInput from './shared/AuthInput';
 import AuthButton from './shared/AuthButton';
+import authService from '../../api/services/auth.service';
+import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // API call logic here
-        setSubmitted(true);
+        try {
+            await authService.forgetPassword(email);
+            setSubmitted(true);
+            toast.success("Reset link sent to your email!");
+        } catch (error) {
+            console.error("Forget password failed:", error);
+        }
     };
 
     return (

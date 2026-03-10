@@ -4,8 +4,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import AuthLayout from './shared/AuthLayout';
 import AuthInput from './shared/AuthInput';
 import AuthButton from './shared/AuthButton';
-import SocialAuthButton from './shared/SocialAuthButton';
-import useAuthStore from '../../store/useAuthStore';
+import toast from 'react-hot-toast';
+import authService from '../../api/services/auth.service';
 
 const roleConfigs = {
   student: {
@@ -46,6 +46,7 @@ const roleConfigs = {
   }
 };
 
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -58,7 +59,6 @@ const SignUp = () => {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuthStore();
 
   // Extract role
   const queryParams = new URLSearchParams(location.search);
@@ -69,15 +69,31 @@ const SignUp = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!agreedToTerms) {
-      alert("Please agree to the Terms of Service");
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
-    // Simulate successful signup
-    login({ email: formData.email, name: formData.fullName, role });
-    navigate("/");
+
+    if (!agreedToTerms) {
+      toast.error("Please agree to the Terms of Service");
+      return;
+    }
+
+    try {
+      const response = await authService.register({
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password
+      });
+
+      toast.success(response.message || "Registered successfully! Please login.");
+      navigate(`/login?role=${role}`);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   // Password strength

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
-import { useNavigate /* useParams */ } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AuthLayout from "./shared/AuthLayout";
 import AuthInput from "./shared/AuthInput";
 import AuthButton from "./shared/AuthButton";
+import authService from "../../api/services/auth.service";
+import toast from "react-hot-toast";
 
 const ResetPassword = () => {
-  /* const { token } = useParams(); */
+  const { token } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -20,14 +22,20 @@ const ResetPassword = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
-    // API logic
-    navigate("/login");
+
+    try {
+      await authService.resetPassword(token, formData.password, formData.confirmPassword);
+      toast.success("Password reset successful! Please login.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Reset password failed:", error);
+    }
   };
 
   return (
