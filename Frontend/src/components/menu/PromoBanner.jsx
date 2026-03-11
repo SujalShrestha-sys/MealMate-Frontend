@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 const PromoBanner = () => {
   return (
-    <section className="w-full mb-20 overflow-hidden">
+    <section className="w-full mb-18 overflow-hidden">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

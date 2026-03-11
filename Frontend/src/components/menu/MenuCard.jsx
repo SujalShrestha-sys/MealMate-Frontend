@@ -16,7 +16,9 @@ const MenuCard = ({ product }) => {
         <Link to={`/food/${product.id}`} className="block">
           <div className="relative -mt-16 mb-6 mx-2 rounded-2xl overflow-hidden shadow-xl shadow-green-900/5 group-hover:shadow-2xl group-hover:shadow-green-500/20 group-hover:scale-105 transition-all duration-500 h-52 bg-gray-100">
             <img
-              src={product.imageUrl || product.image || "/images/placeholder.jpg"}
+              src={
+                product.imageUrl || product.image || "/images/placeholder.jpg"
+              }
               alt={product.name}
               className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
             />
@@ -50,7 +52,7 @@ const MenuCard = ({ product }) => {
               Price
             </span>
             <span className="text-md font-bold text-green-600">
-              NPR - {product.price.toFixed(0)}
+              Rs. {product.price.toFixed(0)}
             </span>
           </div>
 

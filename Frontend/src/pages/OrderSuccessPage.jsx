@@ -26,9 +26,8 @@ const OrderSuccessPage = () => {
   const selectedSlot = location.state?.selectedSlot;
 
   useEffect(() => {
-    clearCart();
     window.scrollTo(0, 0);
-  }, [clearCart]);
+  }, []);
 
   const formatTime = (iso) =>
     iso

@@ -13,10 +13,16 @@ const RelatedProducts = ({ currentProduct }) => {
     const fetchRelated = async () => {
       setIsLoading(true);
       try {
-        const response = await dishService.getByCategory(currentProduct.category.name, 1, 6);
+        const response = await dishService.getByCategory(
+          currentProduct.category.name,
+          1,
+          6,
+        );
         if (response.success) {
           // Filter out the current product itself
-          setRelatedProducts(response.data.filter(p => p.id !== currentProduct.id));
+          setRelatedProducts(
+            response.data.filter((p) => p.id !== currentProduct.id),
+          );
         }
       } catch (error) {
         console.error("Failed to fetch related products:", error);
@@ -53,7 +59,9 @@ const RelatedProducts = ({ currentProduct }) => {
           >
             <div className="aspect-4/3 bg-slate-100 relative">
               <img
-                src={related.imageUrl || related.image || "/images/placeholder.jpg"}
+                src={
+                  related.imageUrl || related.image || "/images/placeholder.jpg"
+                }
                 alt={related.name}
                 className="w-full h-full object-cover"
               />
@@ -64,7 +72,7 @@ const RelatedProducts = ({ currentProduct }) => {
               </h4>
               <div className="flex items-center justify-between">
                 <span className="text-green-600 font-bold text-sm">
-                  NPR {related.price}
+                  Rs. {related.price}
                 </span>
                 <div className="w-6 h-6 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
                   <ChevronLeft size={14} className="rotate-180" />

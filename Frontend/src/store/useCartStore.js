@@ -100,11 +100,11 @@ const useCartStore = create((set, get) => ({
    * clearCart: Empties the entire cart.
    */
   clearCart: async () => {
+    if (get().items.length === 0) return;
     try {
       const response = await cartService.clearCart();
       if (response.success) {
         set({ items: [] });
-        toast.success("Cart cleared");
       }
     } catch (error) {
       console.error("Clear cart failed:", error);

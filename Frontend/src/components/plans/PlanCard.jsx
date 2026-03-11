@@ -33,7 +33,7 @@ const PlanCard = ({ plan }) => {
       <div className="mb-6">
         <div className="flex items-baseline gap-1.5">
           <span className="text-2xl font-black text-gray-900">
-            NRs - {plan.price}
+            Rs. {plan.price}
           </span>
           <span className="text-gray-500">/ {plan.period}</span>
         </div>

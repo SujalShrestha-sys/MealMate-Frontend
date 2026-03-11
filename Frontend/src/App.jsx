@@ -21,11 +21,13 @@ import {
 import "./App.css";
 
 import useCartStore from "./store/useCartStore";
+import useAuthStore from "./store/useAuthStore";
 import { useEffect, useMemo } from "react";
 
 function App() {
   const location = useLocation();
   const { fetchCart } = useCartStore();
+  const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     fetchCart();
@@ -167,7 +169,12 @@ function App() {
           },
         }}
       />
-      {!isAuthPage && <ChatWidget />}
+      {/* Hide on auth pages, landing page, and plans page (if logged out) */}
+      {!isAuthPage &&
+        location.pathname !== "/" &&
+        !(location.pathname.startsWith("/plans") && !isLoggedIn) && (
+          <ChatWidget />
+        )}
     </div>
   );
 }

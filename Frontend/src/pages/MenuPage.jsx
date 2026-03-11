@@ -94,7 +94,7 @@ const MenuPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <main className="flex-1 pt-24 pb-20">
+      <main className="flex-1 pt-22 pb-20">
         {/* Promotional Banner */}
         <PromoBanner />
         {/* Search & Filter - Separated Component (No Sticky) */}

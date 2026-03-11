@@ -9,6 +9,7 @@ import {
   Minus,
   Trash2,
 } from "lucide-react";
+import toast from "react-hot-toast";
 import useCartStore from "../../store/useCartStore";
 import Button from "../common/Button";
 
@@ -207,7 +208,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       variant="secondary"
                       size="sm"
                       className="w-full rounded-2xl py-3.5 border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-100 font-extrabold text-[10px] uppercase tracking-[0.2em]"
-                      onClick={clearCart}
+                      onClick={async () => {
+                        await clearCart();
+                        toast.success("Cart selection cleared");
+                      }}
                       icon={<Trash2 size={12} />}
                     >
                       Clear Selection

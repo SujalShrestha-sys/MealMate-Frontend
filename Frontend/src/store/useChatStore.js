@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import chatService from "../api/services/chat.service";
 import userService from "../api/services/user.service";
 import toast from "react-hot-toast";
+import useNotificationStore from "./useNotificationStore";
 
 const SOCKET_URL =
   import.meta.env.VITE_API_BASE_URL?.replace("/api", "") ||
@@ -54,7 +55,26 @@ const useChatStore = create((set, get) => ({
 
     socket.on("new_message_notification", (notification) => {
       console.log("New message notification:", notification);
+      // Trigger notification in the notification store
+      useNotificationStore.getState().addNotification({
+        id: notification.id || Date.now(),
+        senderName: notification.senderName || "Admin",
+        content: notification.content || "New message received",
+        createdAt: notification.createdAt,
+      });
       get().fetchConversations();
+    });
+
+    socket.on("new_notification", (notification) => {
+      console.log("Real-time notification received:", notification);
+      // The backend emits notifications with { userId, title, message, ... }
+      useNotificationStore.getState().addNotification({
+        id: notification.id,
+        title: notification.title,
+        message: notification.message,
+        createdAt: notification.createdAt,
+        isRead: notification.isRead,
+      });
     });
 
     set({ socket });

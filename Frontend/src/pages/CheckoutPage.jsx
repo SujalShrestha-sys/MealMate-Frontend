@@ -103,6 +103,7 @@ const CheckoutPage = () => {
       } else {
         // CASH: Order is already placed with COMPLETED payment
         toast.dismiss(loadingToast);
+
         await clearCart();
         toast.success("Order confirmed! Pay at pickup.");
 

@@ -1,16 +1,26 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-import { Menu, X, UtensilsCrossed, User, ShoppingBag } from "lucide-react";
+import {
+  Menu,
+  X,
+  UtensilsCrossed,
+  User,
+  ShoppingBag,
+  Bell,
+} from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Button from "./Button";
 import useAuthStore from "../../store/useAuthStore";
 import useCartStore from "../../store/useCartStore";
+import useNotificationStore from "../../store/useNotificationStore";
 import CartDrawer from "../cart/CartDrawer";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,8 +28,16 @@ const Navbar = () => {
   // Get shared state from global stores
   const { isLoggedIn, logout } = useAuthStore();
   const { getCartCount } = useCartStore();
+  const { unreadCount, fetchUnreadCount } = useNotificationStore();
 
   const cartCount = getCartCount();
+
+  // Fetch initial unread count on mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUnreadCount();
+    }
+  }, [isLoggedIn, fetchUnreadCount]);
 
   // Determine which links to show based on auth status
   const navLinks = useMemo(() => {
@@ -84,7 +102,6 @@ const Navbar = () => {
               className={`
               flex items-center justify-center rounded-xl bg-linear-to-br from-green-600 to-green-700 text-white transition-all duration-500
               ${scrolled ? "w-8 h-8 rounded-lg" : "w-10 h-10"}
-              group-hover:rotate-12 group-hover:scale-110 shadow-lg shadow-green-600/30
             `}
             >
               <UtensilsCrossed
@@ -95,12 +112,12 @@ const Navbar = () => {
             <span
               className={`font-bold tracking-tight text-slate-800 transition-all duration-300 ${scrolled ? "text-base" : "text-xl"}`}
             >
-              MealMate<span className="text-green-600"></span>
+              Meal<span className="text-green-700">Mate</span>
             </span>
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-1.5">
+          <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               // Determine if active - Handle route matching
               let isActive = false;
@@ -176,7 +193,7 @@ const Navbar = () => {
                   `}
                   >
                     <ShoppingBag
-                      size={scrolled ? 18 : 22}
+                      size={scrolled ? 18 : 20}
                       className="text-slate-600 group-hover:text-green-600 transition-colors"
                     />
                     {cartCount > 0 && (
@@ -186,6 +203,37 @@ const Navbar = () => {
                     )}
                   </div>
                 </button>
+
+                {/* Notifications Button */}
+                <div className="relative">
+                  <button
+                    onClick={() => setNotificationsOpen(!notificationsOpen)}
+                    className="group relative flex items-center justify-center transition-all duration-300 active:scale-95"
+                  >
+                    <div
+                      className={`
+                      relative flex items-center justify-center rounded-full bg-slate-50 border border-slate-100 
+                      shadow-xs transition-all duration-500 group-hover:bg-white group-hover:border-green-200 group-hover:shadow-md
+                      ${scrolled ? "w-9 h-9" : "w-11 h-11"}
+                      ${notificationsOpen ? "bg-white border-green-200 shadow-md" : ""}
+                    `}
+                    >
+                      <Bell
+                        size={scrolled ? 18 : 20}
+                        className={`transition-colors ${notificationsOpen ? "text-green-600" : "text-slate-600 group-hover:text-green-600"}`}
+                      />
+                      {unreadCount > 0 && (
+                        <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 text-[10px] font-bold text-white border-2 border-white shadow-sm ring-1 ring-green-600/10 animate-pulse-slow">
+                          {unreadCount}
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                  <NotificationsDropdown
+                    isOpen={notificationsOpen}
+                    onClose={() => setNotificationsOpen(false)}
+                  />
+                </div>
 
                 {/* Profile Button */}
                 <button
@@ -204,7 +252,7 @@ const Navbar = () => {
                   `}
                   >
                     <User
-                      size={scrolled ? 18 : 22}
+                      size={scrolled ? 18 : 20}
                       className="text-slate-600 group-hover:text-red-500 transition-colors"
                     />
                     <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full shadow-sm animate-pulse-slow" />
@@ -341,6 +389,33 @@ const Navbar = () => {
                             </span>
                             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                               {cartCount} items selected
+                            </p>
+                          </div>
+                        </button>
+
+                        <button
+                          onClick={() => {
+                            setMenuOpen(false);
+                            setNotificationsOpen(true);
+                          }}
+                          className="flex items-center gap-4 px-4 py-3.5 bg-slate-50 rounded-2xl cursor-pointer group hover:bg-green-50 transition-colors"
+                        >
+                          <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center text-slate-600 shadow-sm group-hover:scale-110 group-hover:text-green-600 transition-all duration-500 relative">
+                            <Bell size={20} />
+                            {unreadCount > 0 && (
+                              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-[8px] font-bold text-white border-2 border-white shadow-sm">
+                                {unreadCount}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-col text-left">
+                            <span className="font-bold text-slate-800">
+                              Notifications
+                            </span>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                              {unreadCount > 0
+                                ? `${unreadCount} new alerts`
+                                : "No new messages"}
                             </p>
                           </div>
                         </button>
