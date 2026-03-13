@@ -1,81 +1,140 @@
 import React from "react";
 import { motion } from "motion/react";
+import { Check, ChefHat, Package, Clock, CircleCheckBig } from "lucide-react";
 
-const OrderStatusStepper = ({ status, isMobile = false }) => {
-  const steps = [
-    { id: "PENDING", label: "Pickup" },
-    { id: "PREPARING", label: "In Work" },
-    { id: "READY", label: "Ready" },
-    { id: "COMPLETED", label: "Done" },
-  ];
 
-  const currentStepIndex = steps.findIndex((step) => step.id === status);
+const STEPS = [
+  { id: "PENDING", label: "Placed", icon: Clock },
+  { id: "CONFIRMED", label: "Confirmed", icon: Check },
+  { id: "PREPARING", label: "Preparing", icon: ChefHat },
+  { id: "READY_FOR_PICKUP", label: "Ready", icon: Package },
+  { id: "COMPLETED", label: "Done", icon: CircleCheckBig },
+];
+
+const getState = (index, effectiveIndex, isFinalized) => {
+  if (isFinalized || index < effectiveIndex) return "finished";
+  if (index === effectiveIndex) return "current";
+  return "upcoming";
+};
+
+const StepNode = ({ step, state, size = "md" }) => {
+  const StepIcon = step.icon;
+  const dim = size === "sm" ? "w-6 h-6" : "w-8 h-8";
+  const iconPx = size === "sm" ? 11 : 14;
+
+  const colors = {
+    finished: { bg: "#16a34a", text: "#ffffff", border: "#16a34a" },
+    current: { bg: "#ffffff", text: "#10b981", border: "#10b981" },
+    upcoming: { bg: "#f8fafc", text: "#cbd5e1", border: "#e2e8f0" },
+  };
 
   return (
-    <div className={`w-full ${isMobile ? "py-6 px-2" : "py-4 px-1"}`}>
-      <div className="relative flex items-center justify-between">
-        {/* Background Track - Ultra Minimal */}
-        {/* Background Track - Ultra Minimal */}
-        <div
-          className={`absolute left-0 top-1/2 w-full -translate-y-1/2 bg-slate-100/60 rounded-full ${isMobile ? "h-[2.5px]" : "h-[2.5px]"}`}
-        />
+    <motion.div 
+      animate={{ 
+        backgroundColor: colors[state].bg,
+        borderColor: colors[state].border,
+        color: colors[state].text,
+        scale: state === "current" ? 1.1 : 1
+      }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className={`${dim} rounded-full flex items-center justify-center shrink-0 border-2`}
+    >
+      {state === "finished" ? (
+        <Check size={iconPx} strokeWidth={2.5} />
+      ) : (
+        <StepIcon size={iconPx} strokeWidth={2} />
+      )}
+    </motion.div>
+  );
+};
 
-        {/* Active Progress - Clean Emerald */}
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{
-            width: `${(currentStepIndex / (steps.length - 1)) * 100}%`,
-          }}
-          className={`absolute left-0 top-1/2 -translate-y-1/2 bg-emerald-500 transition-all duration-1000 ease-out rounded-full ${isMobile ? "h-0.5" : "h-[2.5px]"}`}
-        />
+const HorizontalStepper = ({ effectiveIndex, isFinalized }) => {
+  const labelColor = {
+    finished: "text-green-600/70",
+    current: "text-green-700",
+    upcoming: "text-slate-300",
+  };
 
-        {steps.map((step, index) => {
-          const isCompleted = index < currentStepIndex;
-          const isActive = index === currentStepIndex;
+  return (
+    <div className="flex items-start">
+      {STEPS.map((step, i) => {
+        const state = getState(i, effectiveIndex, isFinalized);
+        const filled = isFinalized || i < effectiveIndex;
 
-          return (
-            <div key={step.id} className="relative flex flex-col items-center">
-              <motion.div
-                initial={false}
-                animate={{
-                  backgroundColor:
-                    isCompleted || isActive ? "#10b981" : "#f1f5f9",
-                  borderColor: isCompleted || isActive ? "#10b981" : "#e2e8f0",
-                  scale: isActive ? (isMobile ? 1.3 : 1.3) : 1,
-                }}
-                className={`flex items-center justify-center rounded-full border transition-all duration-700 z-10 ${
-                  isMobile ? "h-2.5 w-2.5" : "h-3 w-3"
-                } ${isCompleted ? "bg-emerald-500 border-emerald-500" : ""}`}
-              />
-
-              <div
-                className={`absolute flex flex-col items-center ${isMobile ? "-top-9" : "-top-10"}`}
-              >
-                <span
-                  className={`font-bold uppercase tracking-[0.14em] whitespace-nowrap transition-all duration-500 ${
-                    isMobile ? "text-[11px]" : "text-[11px]"
-                  } ${
-                    isActive
-                      ? "text-emerald-600/90"
-                      : isCompleted
-                        ? "text-slate-500"
-                        : "text-slate-300"
-                  }`}
-                >
-                  {step.label}
-                </span>
-
-                {isActive && (
-                  <motion.div
-                    className={`${isMobile ? "w-1 h-1" : "w-1 h-1"} bg-emerald-500 rounded-full mt-2 blur-[1px]`}
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0.8, 0.4] }}
-                    transition={{ repeat: Infinity, duration: 2.5 }}
-                  />
-                )}
-              </div>
+        return (
+          <React.Fragment key={step.id}>
+            <div className="flex flex-col items-center gap-2 min-w-0">
+              <StepNode step={step} state={state} />
+              <span className={`text-[11px] font-semibold whitespace-nowrap ${labelColor[state]}`}>
+                {step.label}
+              </span>
             </div>
-          );
-        })}
+
+            {i < STEPS.length - 1 && (
+              <div className="flex-1 h-[2px] mx-2 mt-4 bg-slate-100 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-green-500 rounded-full origin-left"
+                  initial={false}
+                  animate={{ scaleX: filled ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                />
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+};
+
+// Mobile: Vertical
+const VerticalStepper = ({ effectiveIndex, isFinalized }) => {
+  const labelColor = {
+    finished: "text-slate-500",
+    current: "text-green-700",
+    upcoming: "text-slate-300",
+  };
+
+  return (
+    <div className="flex flex-col">
+      {STEPS.map((step, i) => {
+        const state = getState(i, effectiveIndex, isFinalized);
+        const isLast = i === STEPS.length - 1;
+        const filled = isFinalized || i < effectiveIndex;
+
+        return (
+          <div key={step.id} className="flex items-stretch gap-3">
+            <div className="flex flex-col items-center">
+              <StepNode step={step} state={state} size="sm" />
+              {!isLast && (
+                <div className={`w-[2px] flex-1 min-h-[16px] rounded-full ${filled ? "bg-green-400" : "bg-slate-100"}`} />
+              )}
+            </div>
+            <div className={isLast ? "" : "pb-3"}>
+              <span className={`text-xs font-semibold leading-6 ${labelColor[state]}`}>
+                {step.label}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+//Main
+const OrderStatusStepper = ({ status }) => {
+  const idx = STEPS.findIndex((s) => s.id === status);
+  const effectiveIndex = status === "CANCELLED" ? -1 : idx;
+  const isFinalized = status === "COMPLETED";
+
+  return (
+    <div className="w-full select-none">
+      <div className="hidden sm:block">
+        <HorizontalStepper effectiveIndex={effectiveIndex} isFinalized={isFinalized} />
+      </div>
+      <div className="sm:hidden">
+        <VerticalStepper effectiveIndex={effectiveIndex} isFinalized={isFinalized} />
       </div>
     </div>
   );

@@ -45,7 +45,10 @@ const SlotPicker = ({ selectedSlot, onSelectSlot }) => {
 
   // Check if a slot is expired
   const isExpired = (slot) => {
-    return new Date(slot.endTime) < new Date();
+    if (!slot.endTime) return false;
+    const now = new Date();
+    const expiryTime = new Date(slot.endTime);
+    return expiryTime <= now;
   };
 
   // Filter: only show active (non-expired) slots

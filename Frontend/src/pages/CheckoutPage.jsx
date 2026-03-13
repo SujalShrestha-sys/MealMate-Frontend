@@ -42,6 +42,8 @@ const CheckoutPage = () => {
 
   // Handle payment based on method
   const handlePayment = async (method) => {
+    if (isProcessing) return;
+
     if (!selectedSlot) {
       toast.error("Please select a pickup slot first!");
       return;
@@ -130,7 +132,7 @@ const CheckoutPage = () => {
       <Navbar />
 
       <main className="flex-1 pt-26 pb-20 px-4 relative">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Hero */}
           <div className="mb-8">
             <Link

@@ -187,10 +187,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     <span>Rs. {cartTotal}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-xl font-extrabold text-slate-900 tracking-tight">
-                      Total Payment.
+                    <span className="text-lg font-semibold text-slate-800 tracking-tight">
+                      Total Payment
                     </span>
-                    <span className="text-xl font-extrabold text-green-600 tracking-tight">
+                    <span className="text-lg font-semibold text-green-600 tracking-tight">
                       Rs. {cartTotal}
                     </span>
                   </div>
@@ -198,7 +198,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <div className="flex flex-col gap-3">
                   <Button
                     variant="primary"
-                    className="w-full rounded-2xl py-5 font-bold text-base shadow-xl shadow-green-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full rounded-lg py-4 font-bold text-base shadow-md shadow-green-600/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
                     onClick={handleNavigateToCheckout}
                   >
                     Proceed to Checkout
@@ -207,7 +207,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                     <Button
                       variant="secondary"
                       size="sm"
-                      className="w-full rounded-2xl py-3.5 border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-100 font-extrabold text-[10px] uppercase tracking-[0.2em]"
+                      className="w-full rounded-lg py-4 border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-100 font-extrabold text-[11px] uppercase tracking-[0.2em]"
                       onClick={async () => {
                         await clearCart();
                         toast.success("Cart selection cleared");

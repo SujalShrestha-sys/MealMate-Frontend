@@ -14,9 +14,13 @@ const PaymentVerifyPage = () => {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState("verifying");
   const { clearCart } = useCartStore();
+  const hasVerified = React.useRef(false);
 
   useEffect(() => {
     const verifyPayment = async () => {
+      if (hasVerified.current) return;
+      hasVerified.current = true;
+
       // Khalti sends back pidx and other params in the URL
       const pidx = searchParams.get("pidx");
       const paymentStatus = searchParams.get("status");
