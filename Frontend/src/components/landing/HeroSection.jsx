@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowRight, Play, Users, Building2, Star } from "lucide-react";
+import { ArrowRight, Play, Users, Building2, Star, X } from "lucide-react";
 import Button from "../common/Button";
 
 const useCountUp = (target, speed = 20) => {
@@ -25,6 +25,7 @@ const useCountUp = (target, speed = 20) => {
 const HeroSection = () => {
   const users = useCountUp(150, 10);
   const campuses = useCountUp(50, 10);
+  const [showVideo, setShowVideo] = useState(false);
 
   return (
     <section
@@ -56,7 +57,12 @@ const HeroSection = () => {
                 Get Started
               </Button>
 
-              <Button variant="secondary" size="md" icon={<Play size={16} />}>
+              <Button
+                variant="secondary"
+                size="md"
+                icon={<Play size={16} />}
+                onClick={() => setShowVideo(true)}
+              >
                 Watch Demo
               </Button>
             </div>
@@ -111,6 +117,27 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* VIDEO MODAL */}
+      {showVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <button
+            onClick={() => setShowVideo(false)}
+            className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+          >
+            <X size={24} />
+          </button>
+          <div className="relative w-full max-w-5xl bg-gray-50 rounded-xl shadow-lg overflow-hidden flex justify-center items-center">
+            <video
+              src="/video/mealmate.mp4"
+              autoPlay
+              controls
+              className="w-full h-auto max-h-[80vh] object-contain rounded-xl"
+              onEnded={() => setShowVideo(false)}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
