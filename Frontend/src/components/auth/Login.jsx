@@ -4,7 +4,6 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import AuthLayout from "./shared/AuthLayout";
 import AuthInput from "./shared/AuthInput";
 import AuthButton from "./shared/AuthButton";
-import SocialAuthButton from "./shared/SocialAuthButton";
 import useAuthStore from "../../store/useAuthStore";
 import authService from "../../api/services/auth.service";
 import toast from "react-hot-toast";
@@ -96,7 +95,13 @@ const Login = () => {
 
       login(response.user);
       toast.success(response.message || "Logged in successfully");
-      navigate("/");
+      
+      // Redirect based on role
+      if (response.user.role?.toLowerCase() === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -188,16 +193,6 @@ const Login = () => {
 
         <AuthButton type="submit">Sign In</AuthButton>
       </form>
-
-      <div className="flex items-center gap-4 my-7">
-        <div className="h-px bg-gray-200 flex-1" />
-        <span className="text-gray-400 text-sm font-medium">
-          or continue with
-        </span>
-        <div className="h-px bg-gray-200 flex-1" />
-      </div>
-
-      <SocialAuthButton onClick={() => {}} />
 
       <p className="text-center text-gray-500 mt-8">
         Don't have an account?{" "}

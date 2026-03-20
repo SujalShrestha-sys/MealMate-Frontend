@@ -1,0 +1,6 @@
+
+/* Search input focus ring with orange */
+.admin-search-input:focus {
+  border-color: #fb923c;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}

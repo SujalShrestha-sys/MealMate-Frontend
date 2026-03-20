@@ -107,6 +107,7 @@ const SignUp = () => {
         name: formData.fullName,
         email: formData.email,
         password: formData.password,
+        role: role,
       });
 
       toast.success(

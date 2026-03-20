@@ -3,7 +3,7 @@ import ChatFab from "./ChatFab";
 import ChatPanel from "./ChatPanel";
 import useChatStore from "../../store/useChatStore";
 import useAuthStore from "../../store/useAuthStore";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 import toast from "react-hot-toast";
 
 const ChatWidget = () => {
