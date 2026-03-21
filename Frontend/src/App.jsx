@@ -17,6 +17,7 @@ import PaymentVerifyPage from "./pages/PaymentVerifyPage.jsx";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage.jsx";
 import InventoryPage from "./pages/admin/InventoryPage.jsx";
 import UserManagementPage from "./pages/admin/UserManagementPage.jsx";
+import SlotManagementPage from "./pages/admin/SlotManagementPage.jsx";
 import ChatWidget from "./components/chat/ChatWidget.jsx";
 import { Toaster } from "react-hot-toast";
 import {
@@ -175,6 +176,14 @@ function App() {
             element={
               <ProtectedRoute adminOnly>
                 <UserManagementPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/slots"
+            element={
+              <ProtectedRoute adminOnly>
+                <SlotManagementPage />
               </ProtectedRoute>
             }
           />

@@ -12,7 +12,7 @@ const SlotPicker = ({ selectedSlot, onSelectSlot }) => {
     const fetchSlots = async () => {
       try {
         setLoading(true);
-        const response = await pickupSlotService.getSlots();
+        const response = await pickupSlotService.getPickupSlots();
         if (response.success) {
           setSlots(response.data);
         }

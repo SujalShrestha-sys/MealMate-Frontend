@@ -18,6 +18,7 @@ import {
   Package,
   Sparkles,
   Users,
+  Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/useAuthStore";
@@ -25,6 +26,7 @@ import useAuthStore from "../../store/useAuthStore";
 // Sidebar navigation items
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+  { label: "Slot Management", icon: Clock, path: "/admin/slots" },
   { label: "User Management", icon: Users, path: "/admin/users" },
   { label: "Orders", icon: ClipboardList, path: "/admin/orders" },
   { label: "Inventory", icon: Package, path: "/admin/inventory" },

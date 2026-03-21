@@ -2,13 +2,28 @@ import apiClient from "../apiClient";
 
 const pickupSlotService = {
   // Get all pickup slots
-  getSlots: () => {
+  getPickupSlots: async () => {
     return apiClient.get("/pickup-slots");
   },
 
-  // Get a single slot by ID
-  getSlotById: (id) => {
+  // Get pickup slot by ID
+  getPickupSlotById: async (id) => {
     return apiClient.get(`/pickup-slots/${id}`);
+  },
+
+  // Create pickup slot
+  createPickupSlot: async (data) => {
+    return apiClient.post("/pickup-slots/create", data);
+  },
+
+  // Update pickup slot
+  updatePickupSlot: async (id, data) => {
+    return apiClient.put(`/pickup-slots/${id}`, data);
+  },
+
+  // Delete pickup slot
+  deletePickupSlot: async (id) => {
+    return apiClient.delete(`/pickup-slots/${id}`);
   },
 };
 
