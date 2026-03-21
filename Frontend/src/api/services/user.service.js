@@ -6,6 +6,9 @@ const userService = {
     return apiClient.get("/users");
   },
 
+  // Create user
+  createUser: (data) => apiClient.post("/users", data),
+
   // Get admin user details for chat
   getAdminUser: async () => {
     return apiClient.get("/users/admin");

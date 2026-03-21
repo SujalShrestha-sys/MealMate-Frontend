@@ -78,32 +78,20 @@ const UserManagementPage = () => {
   };
 
   const handleCreateOrUpdate = async (data) => {
-    const operation = selectedUser
-      ? userService.updateUser(selectedUser.id, data)
-      : userService.getAllUsers();
-
     const isEditing = !!selectedUser;
 
     const promise = isEditing
       ? userService.updateUser(selectedUser.id, data)
-      : Promise.reject(
-          new Error(
-            "Create endpoint not defined in provided snippet. Please add POST /api/users to your backend.",
-          ),
-        );
-
-    if (!isEditing) {
-      toast.error(
-        "Account creation is handled via Auth/SignUp. Admins can only Edit or Remove.",
-      );
-      setAddEditOpen(false);
-      return;
-    }
+      : userService.createUser(data);
 
     toast.promise(promise, {
-      loading: "Updating user...",
-      success: "User updated",
-      error: "Update failed",
+      loading: isEditing ? "Updating user..." : "Creating user...",
+      success: isEditing
+        ? "User updated successfully"
+        : "User created successfully",
+      error: (err) =>
+        err.response?.data?.message ||
+        (isEditing ? "Update failed" : "Creation failed"),
     });
 
     try {

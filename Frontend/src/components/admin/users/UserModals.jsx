@@ -15,7 +15,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
-import { X, AlertTriangle, User, Mail, Shield, Activity } from "lucide-react";
+import { X, AlertTriangle, User, Mail, Shield, Activity, Lock } from "lucide-react";
 
 const modalPaperProps = {
   sx: {
@@ -36,6 +36,7 @@ export const AddEditUserModal = ({
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     roleId: "",
   });
 
@@ -44,10 +45,11 @@ export const AddEditUserModal = ({
       setFormData({
         name: user.name || "",
         email: user.email || "",
+        password: "",
         roleId: user.roleId || "",
       });
     } else {
-      setFormData({ name: "", email: "", roleId: "" });
+      setFormData({ name: "", email: "", password: "", roleId: "" });
     }
   }, [user, open]);
 
@@ -164,6 +166,35 @@ export const AddEditUserModal = ({
                 }}
               />
             </Grid>
+            {!user && (
+              <Grid size={12}>
+                <TextField
+                  fullWidth
+                  label="Account Password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "14px",
+                      bgcolor: "#fcfcfc",
+                      "& fieldset": { borderColor: "grey.200" },
+                      "&:hover fieldset": { borderColor: "#e79110ff" },
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <Box sx={{ mr: 1.5, color: "#e79110ff", display: "flex" }}>
+                        <Lock size={18} />
+                      </Box>
+                    ),
+                  }}
+                />
+              </Grid>
+            )}
             <Grid size={12}>
               <FormControl fullWidth>
                 <InputLabel>Assign Role</InputLabel>
