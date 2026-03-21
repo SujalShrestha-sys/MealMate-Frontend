@@ -17,7 +17,7 @@ import {
   LogOut,
   Package,
   Sparkles,
-  User,
+  Users,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/useAuthStore";
@@ -25,6 +25,7 @@ import useAuthStore from "../../store/useAuthStore";
 // Sidebar navigation items
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
+  { label: "User Management", icon: Users, path: "/admin/users" },
   { label: "Orders", icon: ClipboardList, path: "/admin/orders" },
   { label: "Inventory", icon: Package, path: "/admin/inventory" },
   { label: "Menu", icon: UtensilsCrossed, path: "/admin/menu" },

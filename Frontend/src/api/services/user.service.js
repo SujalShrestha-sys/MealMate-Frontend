@@ -1,38 +1,34 @@
 import apiClient from "../apiClient";
 
-/**
- * User Service
- * Manages user-specific data and profiles.
- */
 const userService = {
-  /**
-   * Update User Profile
-   * @param {Object} data
-   */
-  updateProfile: async (data) => {
-    return await apiClient.put("/users/profile", data);
-  },
-
-  /**
-   * Fetch all users (admin only)
-   */
+  // Get all users
   getAllUsers: async () => {
-    return await apiClient.get("/users");
+    return apiClient.get("/users");
   },
 
-  /**
-   * Get specific user by ID
-   * @param {string} userId
-   */
-  getUserById: async (userId) => {
-    return await apiClient.get(`/users/${userId}`);
-  },
-
-  /**
-   * Get admin/support user for chat
-   */
+  // Get admin user details for chat
   getAdminUser: async () => {
-    return await apiClient.get("/users/admin");
+    return apiClient.get("/users/admin");
+  },
+
+  // Get user by ID
+  getUserById: async (id) => {
+    return apiClient.get(`/users/${id}`);
+  },
+
+  // Update user
+  updateUser: async (id, data) => {
+    return apiClient.put(`/users/${id}`, data);
+  },
+
+  // Delete user
+  deleteUser: async (id) => {
+    return apiClient.delete(`/users/${id}`);
+  },
+
+  // Get all roles
+  getRoles: async () => {
+    return apiClient.get("/users/roles");
   },
 };
 
