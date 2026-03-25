@@ -15,7 +15,6 @@ const UserManagementPage = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  // Modals state
   const [addEditOpen, setAddEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -99,7 +98,7 @@ const UserManagementPage = () => {
       setAddEditOpen(false);
       fetchUsers();
     } catch (error) {
-      // toast handles it
+      toast.error(error.response?.data?.message || "Operation failed");
     }
   };
 
@@ -119,7 +118,7 @@ const UserManagementPage = () => {
       setDeleteOpen(false);
       fetchUsers();
     } catch (error) {
-      // toast handles it
+      toast.error(error.response?.data?.message || "Operation failed");
     }
   };
 
@@ -148,6 +147,7 @@ const UserManagementPage = () => {
 
         <UserTable
           users={filteredUsers}
+          loading={loading}
           onSearchChange={handleSearchChange}
           onEdit={handleEditUser}
           onDelete={handleDeleteClick}

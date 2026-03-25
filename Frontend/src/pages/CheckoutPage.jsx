@@ -30,19 +30,29 @@ const CheckoutPage = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [subscription, setSubscription] = useState(null);
+  const [selectedMethod, setSelectedMethod] = useState("KHALTI");
 
   React.useEffect(() => {
     fetchCart();
 
-    // Fetch active subscription
     const fetchSubscription = async () => {
       try {
         const response = await subscriptionService.getMySubscription();
         if (response.success) {
-          setSubscription(response.data);
+          const subData = response.data;
+          setSubscription(subData);
+          
+          // Auto-select subscription if valid
+          if (subData.status === "ACTIVE" && subData.remainingMeals > 0) {
+            setSelectedMethod("SUBSCRIPTION");
+          }
         }
       } catch (error) {
-        // Silently handle 404 (no active subscription)
+        // Only show error if it's not a 404 (user doesn't have a plan)
+        if (error.response?.status !== 404) {
+          toast.error("Failed to fetch subscription. Please try again.");
+          console.error("Subscription fetch error:", error);
+        }
         setSubscription(null);
       }
     };
@@ -55,8 +65,6 @@ const CheckoutPage = () => {
   const updateQuantity = (dishId, delta) => {
     updateGlobalQuantity(dishId, delta);
   };
-
-  // Handle payment based on method
   const handlePayment = async (method) => {
     if (isProcessing) return;
 
@@ -75,7 +83,6 @@ const CheckoutPage = () => {
     );
 
     try {
-      // Step 1: Create order on backend
       const orderResponse = await orderService.createOrder({
         userId: user.id,
         pickupSlotId: selectedSlot.id,
@@ -96,7 +103,6 @@ const CheckoutPage = () => {
       const orderId = orderResponse.data.order.id;
 
       if (method === "KHALTI") {
-        // Step 2: Initiate Khalti payment to get redirect URL
         const returnUrl = `${window.location.origin}/payment/verify`;
         const paymentResponse = await paymentService.initiatePayment({
           orderId,
@@ -108,12 +114,9 @@ const CheckoutPage = () => {
 
         if (paymentResponse.success && paymentResponse.data?.payment_url) {
           toast.success("Redirecting to Khalti...");
-
-          // Save orderId so we can use it after redirect back
           localStorage.setItem("pending_order_id", orderId);
           localStorage.setItem("pending_slot", JSON.stringify(selectedSlot));
 
-          // Redirect to Khalti checkout UI
           window.location.href = paymentResponse.data.payment_url;
         } else {
           toast.error("Could not connect to Khalti. Try again.");
@@ -246,6 +249,8 @@ const CheckoutPage = () => {
             <div className="lg:col-span-4 sticky top-28 self-start flex flex-col gap-4">
               <OrderSummary subtotal={subtotal} selectedSlot={selectedSlot}>
                 <PaymentMethods
+                  selectedMethod={selectedMethod.toLowerCase()}
+                  onMethodChange={(m) => setSelectedMethod(m.toUpperCase())}
                   onPayKhalti={() => handlePayment("KHALTI")}
                   onPayCash={() => handlePayment("CASH")}
                   onPaySubscription={() => handlePayment("SUBSCRIPTION")}

@@ -58,7 +58,10 @@ const PaymentVerifyPage = () => {
             let pendingSlot = null;
             try {
               pendingSlot = JSON.parse(localStorage.getItem("pending_slot"));
-            } catch (e) {}
+            } catch (error) {
+              toast.error("Failed to parse pending slot info.");
+              console.log("Failed to parse pending slot:", error);
+            }
 
             localStorage.removeItem("pending_order_id");
             localStorage.removeItem("pending_slot");

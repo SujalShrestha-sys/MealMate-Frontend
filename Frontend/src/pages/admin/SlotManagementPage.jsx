@@ -88,7 +88,7 @@ const SlotManagementPage = () => {
 
   return (
     <AdminLayout activePath="/admin/slots">
-      <Box sx={{ maxWidth: "100%", p: { xs: 2, sm: 1.5} }}>
+      <Box sx={{ maxWidth: "100%", p: { xs: 2, sm: 1.5 } }}>
         <SlotHeader />
 
         <Grid container spacing={{ xs: 2.5, sm: 3 }}>

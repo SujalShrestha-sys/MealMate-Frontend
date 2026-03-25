@@ -20,6 +20,7 @@ import SlotManagementPage from "./pages/admin/SlotManagementPage.jsx";
 import UserManagementPage from "./pages/admin/UserManagementPage.jsx";
 import SubscriptionManagementPage from "./pages/admin/SubscriptionManagementPage.jsx";
 import MenuManagementPage from "./pages/admin/MenuManagementPage.jsx";
+import OrderManagementPage from "./pages/admin/OrderManagementPage.jsx";
 import ChatWidget from "./components/chat/ChatWidget.jsx";
 import { Toaster } from "react-hot-toast";
 import {
@@ -201,6 +202,14 @@ function App() {
             element={
               <ProtectedRoute adminOnly>
                 <SlotManagementPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute adminOnly>
+                <OrderManagementPage />
               </ProtectedRoute>
             }
           />

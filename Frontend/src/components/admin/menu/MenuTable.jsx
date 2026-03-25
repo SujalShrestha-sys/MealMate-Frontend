@@ -14,7 +14,6 @@ import {
   TextField,
   InputAdornment,
   Button,
-
   Pagination,
   Skeleton,
 } from "@mui/material";
@@ -277,7 +276,7 @@ const MenuTable = ({
                       <Box>
                         <Typography
                           variant="subtitle2"
-                          sx={{ fontWeight: 800, color: "grey.900" }}
+                          sx={{ fontWeight: 700, color: "grey.900" }}
                         >
                           {dish.name}
                         </Typography>
@@ -317,7 +316,7 @@ const MenuTable = ({
                       );
                     })()}
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 800, color: "grey.800" }}>
+                  <TableCell sx={{ fontWeight: 700, color: "grey.800" }}>
                     Rs. {dish.price}
                   </TableCell>
                   <TableCell>
@@ -328,7 +327,7 @@ const MenuTable = ({
                         sx={{
                           bgcolor: "#fff7ed",
                           color: "#ea580c",
-                          fontWeight: 700,
+                          fontWeight: 600,
                           fontSize: "0.7rem",
                           border: "1px solid #ffedd5",
                           borderRadius: 1,

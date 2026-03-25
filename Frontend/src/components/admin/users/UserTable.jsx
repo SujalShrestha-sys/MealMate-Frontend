@@ -14,13 +14,14 @@ import {
   TextField,
   InputAdornment,
   Avatar,
+  Skeleton,
 } from "@mui/material";
 import { motion } from "motion/react";
-import { Search, Plus, Edit2, Trash2, Mail, Shield } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Mail } from "lucide-react";
 
 const MotionPaper = motion.create(Paper);
 
-const UserTable = ({ users, onSearchChange, onEdit, onDelete, onAdd }) => {
+const UserTable = ({ users, loading, onSearchChange, onEdit, onDelete, onAdd }) => {
   const getRoleColor = (role) => {
     switch (role?.toUpperCase()) {
       case "ADMIN":
@@ -138,7 +139,33 @@ const UserTable = ({ users, onSearchChange, onEdit, onDelete, onAdd }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.length === 0 ? (
+            {loading ? (
+              Array.from(new Array(5)).map((_, index) => (
+                <TableRow key={`skeleton-${index}`}>
+                  <TableCell>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <Skeleton variant="rectangular" width={36} height={36} sx={{ borderRadius: "10px" }} />
+                      <Skeleton variant="text" width={120} />
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width={80} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width={180} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="rectangular" width={70} height={24} sx={{ borderRadius: "6px" }} />
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <Skeleton variant="circular" width={32} height={32} />
+                      <Skeleton variant="circular" width={32} height={32} />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : users.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
                   <Typography variant="body2" color="grey.500">

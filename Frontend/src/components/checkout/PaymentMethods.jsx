@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 import { ShieldCheck, Wallet, Landmark, CheckCircle2 } from "lucide-react";
 
@@ -7,14 +7,14 @@ const PaymentMethods = ({
   onPayCash,
   onPaySubscription,
   subscription,
+  disabled,
+  selectedMethod,
+  onMethodChange,
 }) => {
   const hasSub =
     subscription &&
     subscription.status === "ACTIVE" &&
     subscription.remainingMeals > 0;
-  const [selectedMethod, setSelectedMethod] = useState(
-    hasSub ? "subscription" : "khalti",
-  );
 
   return (
     <div className="mt-4 space-y-4">
@@ -28,8 +28,11 @@ const PaymentMethods = ({
         {/* Subscription Button */}
         {hasSub && (
           <motion.button
-            onClick={() => setSelectedMethod("subscription")}
+            disabled={disabled}
+            onClick={() => onMethodChange("subscription")}
             className={`relative group flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 ${
+              disabled ? "opacity-50 cursor-not-allowed" : ""
+            } ${
               selectedMethod === "subscription"
                 ? "bg-purple-50 border-purple-600 text-purple-700"
                 : "bg-white border-slate-100 hover:border-purple-600/30 text-slate-600 hover:bg-purple-50/10"
@@ -66,8 +69,11 @@ const PaymentMethods = ({
         )}
         {/* Khalti Button */}
         <motion.button
-          onClick={() => setSelectedMethod("khalti")}
+          disabled={disabled}
+          onClick={() => onMethodChange("khalti")}
           className={`relative group flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 ${
+            disabled ? "opacity-50 cursor-not-allowed" : ""
+          } ${
             selectedMethod === "khalti"
               ? "bg-green-50 border-green-600 text-green-700"
               : "bg-white border-slate-100 hover:border-green-600/30 text-slate-600 hover:bg-green-50/10"
@@ -101,8 +107,11 @@ const PaymentMethods = ({
 
         {/* Cash Button */}
         <motion.button
-          onClick={() => setSelectedMethod("cash")}
+          disabled={disabled}
+          onClick={() => onMethodChange("cash")}
           className={`relative group flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 ${
+            disabled ? "opacity-50 cursor-not-allowed" : ""
+          } ${
             selectedMethod === "cash"
               ? "bg-amber-50 border-amber-600 text-amber-700"
               : "bg-white border-slate-100 hover:border-amber-600/30 text-slate-600 hover:bg-amber-50/10"
@@ -140,6 +149,7 @@ const PaymentMethods = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        disabled={disabled}
         onClick={
           selectedMethod === "khalti"
             ? onPayKhalti
@@ -148,6 +158,8 @@ const PaymentMethods = ({
               : onPayCash
         }
         className={`w-full py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 uppercase tracking-widest ${
+          disabled ? "opacity-50 cursor-not-allowed" : ""
+        } ${
           selectedMethod === "khalti"
             ? "bg-green-600 text-white hover:bg-green-700"
             : selectedMethod === "subscription"
@@ -167,8 +179,8 @@ const PaymentMethods = ({
           </>
         ) : (
           <>
-            <CheckCircle2 size={18} />
-            Place Pickup Order
+            <Wallet size={18} />
+            Pay with Cash on Pickup
           </>
         )}
       </motion.button>

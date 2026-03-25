@@ -14,6 +14,7 @@ import {
   TextField,
   InputAdornment,
   TablePagination,
+  Skeleton,
 } from "@mui/material";
 import { motion } from "motion/react";
 import { Search, Plus, Edit2, Trash2 } from "lucide-react";
@@ -22,6 +23,7 @@ const MotionPaper = motion.create(Paper);
 
 const InventoryTable = ({
   items,
+  loading,
   pagination,
   onPageChange,
   onSearchChange,
@@ -151,7 +153,33 @@ const InventoryTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.length === 0 ? (
+            {loading ? (
+              Array.from(new Array(pagination.limit || 5)).map((_, index) => (
+                <TableRow key={`skeleton-${index}`}>
+                  <TableCell>
+                    <Skeleton variant="text" width={150} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width={40} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width={40} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="text" width={40} />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton variant="rectangular" width={80} height={24} sx={{ borderRadius: 1 }} />
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <Skeleton variant="circular" width={32} height={32} />
+                      <Skeleton variant="circular" width={32} height={32} />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : items.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
                   <Typography variant="body2" color="grey.500">

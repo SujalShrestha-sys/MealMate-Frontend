@@ -5,7 +5,7 @@ import notificationService from "../api/services/notification.service";
  * useNotificationStore
  * Manages live notifications synced with the backend.
  */
-const useNotificationStore = create((set, get) => ({
+const useNotificationStore = create((set) => ({
   notifications: [],
   unreadCount: 0,
   isLoading: false,

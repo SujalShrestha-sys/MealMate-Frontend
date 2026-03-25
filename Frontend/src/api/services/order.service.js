@@ -11,7 +11,17 @@ const orderService = {
     return apiClient.get(`/admin/orders/user/${userId}`);
   },
 
-  // Cancel an order
+  // Get all orders (Admin)
+  getAllOrders: () => {
+    return apiClient.get("/admin/orders");
+  },
+
+  // Update order status (Admin)
+  updateOrderStatus: (id, status) => {
+    return apiClient.put(`/admin/orders/${id}/status`, { status });
+  },
+
+  // Cancel an order (Admin/User)
   cancelOrder: (orderId) => {
     return apiClient.delete(`/admin/orders/${orderId}/cancel`);
   },

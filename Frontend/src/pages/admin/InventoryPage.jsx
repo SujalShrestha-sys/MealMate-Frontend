@@ -23,7 +23,6 @@ const InventoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ total: 0, lowStock: 0, outOfStock: 0 });
 
-  // Modals state
   const [addEditOpen, setAddEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -157,7 +156,7 @@ const InventoryPage = () => {
                 <AlertTriangle size={20} color="#d97706" />
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 700, color: "#92400e"}}
+                  sx={{ fontWeight: 700, color: "#92400e" }}
                 >
                   Warning: {stats.lowStock} items are running low on stock.
                   Restock soon.
@@ -169,6 +168,7 @@ const InventoryPage = () => {
 
         <InventoryTable
           items={items}
+          loading={loading}
           pagination={pagination}
           onPageChange={(page) => setPagination((prev) => ({ ...prev, page }))}
           onSearchChange={setSearch}

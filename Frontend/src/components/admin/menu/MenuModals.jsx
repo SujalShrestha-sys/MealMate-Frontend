@@ -11,8 +11,35 @@ import {
   Typography,
   Box,
   IconButton,
+  Divider,
+  InputAdornment,
 } from "@mui/material";
-import { X, Edit2, Plus, Image as ImageIcon } from "lucide-react";
+import {
+  X,
+  Edit2,
+  Plus,
+  Image as ImageIcon,
+  DollarSign,
+  Award,
+  FileText,
+  Link as LinkIcon,
+  Layers,
+} from "lucide-react";
+
+const fieldStyle = {
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "12px",
+    fontWeight: 500,
+    bgcolor: "#fafafa",
+    transition: "all 0.2s ease",
+    "&:hover": { bgcolor: "#f5f5f5" },
+    "&.Mui-focused": { bgcolor: "#fff" },
+  },
+  "& .MuiInputLabel-root": {
+    fontWeight: 500,
+    fontSize: "0.9rem",
+  },
+};
 
 export const AddEditDishModal = ({
   open,
@@ -74,61 +101,89 @@ export const AddEditDishModal = ({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="xs"
+      maxWidth="sm"
       fullWidth
       PaperProps={{
         sx: {
-          borderRadius: 1,
-          p: 1.5,
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)",
+          borderRadius: "14px",
+          boxShadow: "0 25px 60px -12px rgba(0, 0, 0, 0.15)",
+          overflow: "hidden",
         },
       }}
     >
-      <DialogTitle
-        sx={{ textAlign: "center", position: "relative", pt: 4, pb: 1 }}
+      {/* Header */}
+      <Box
+        sx={{
+          background: "linear-gradient(135deg, #fff7ed 0%, #fff 100%)",
+          px: { xs: 2.5, sm: 3.5 },
+          pt: 3,
+          pb: 2.5,
+          position: "relative",
+        }}
       >
         <IconButton
           onClick={onClose}
           size="small"
-          sx={{ position: "absolute", right: 16, top: 16, color: "grey.400" }}
-        >
-          <X size={20} />
-        </IconButton>
-
-        <Box
           sx={{
-            width: 42,
-            height: 42,
-            borderRadius: 2,
-            bgcolor: "primary.main",
-            color: "grey.50",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mx: "auto",
-            mb: 2,
-            boxShadow: "0 8px 16px -4px rgba(197, 113, 53, 0.2)",
+            position: "absolute",
+            right: 16,
+            top: 16,
+            color: "grey.400",
+            bgcolor: "#fff",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+            "&:hover": { bgcolor: "#fff", color: "grey.700" },
           }}
         >
-          {dish ? <Edit2 size={26} /> : <Plus size={26} />}
+          <X size={18} />
+        </IconButton>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: "14px",
+              background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 8px 20px -4px rgba(249,115,22,0.35)",
+              flexShrink: 0,
+            }}
+          >
+            {dish ? <Edit2 size={22} /> : <Plus size={22} />}
+          </Box>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 800,
+                color: "grey.900",
+                letterSpacing: "-0.02em",
+                fontSize: { xs: "1.1rem", sm: "1.25rem" },
+              }}
+            >
+              {dish ? "Edit Dish Details" : "Add New Dish"}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: "grey.500", mt: 0.25, fontSize: "0.85rem" }}
+            >
+              {dish
+                ? "Update the information for this dish"
+                : "Fill in the details to add to your menu"}
+            </Typography>
+          </Box>
         </Box>
+      </Box>
 
-        <Typography
-          variant="h5"
-          component="div"
-          sx={{ fontWeight: 700, color: "grey.900", letterSpacing: "-0.02em" }}
-        >
-          {dish ? "Edit Dish Detail" : "New Menu Item"}
-        </Typography>
-        <Typography variant="body2" color="grey.500" sx={{ mt: 0.5 }}>
-          {dish
-            ? "Update the information for this dish"
-            : "Fill in the details to add to your menu"}
-        </Typography>
-      </DialogTitle>
+      <Divider />
 
-      <DialogContent sx={{ px: 3, py: 1 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5, mt: 1 }}>
+      {/* Content */}
+      <DialogContent sx={{ px: { xs: 2.5, sm: 3.5 }, py: 3 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+          {/* Dish Name — full width, prominent */}
           <TextField
             label="Dish Name"
             name="name"
@@ -137,68 +192,120 @@ export const AddEditDishModal = ({
             onChange={handleChange}
             placeholder="e.g. Classic Burger"
             variant="outlined"
-            InputProps={{ sx: { borderRadius: 2, fontWeight: 600 } }}
-            InputLabelProps={{ sx: { fontWeight: 500 } }}
+            sx={fieldStyle}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FileText size={18} color="#94a3b8" />
+                </InputAdornment>
+              ),
+            }}
           />
 
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <TextField
-              label="Price (Rs.)"
-              name="price"
-              type="number"
-              fullWidth
-              value={formData.price}
-              onChange={handleChange}
-              InputProps={{ sx: { borderRadius: 2, fontWeight: 600 } }}
-            />
-            {!showNewCategory ? (
+          {/* Price + Category — two columns */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
               <TextField
-                label="Category"
-                name="categoryName"
-                select
+                label="Price (Rs.)"
+                name="price"
+                type="number"
                 fullWidth
-                value={formData.categoryName}
+                value={formData.price}
                 onChange={handleChange}
-                InputProps={{ sx: { borderRadius: 2, fontWeight: 600 } }}
-              >
-                {categories.map((cat) => (
-                  <MenuItem
-                    key={cat.id}
-                    value={cat.name}
-                    sx={{ fontWeight: 500 }}
-                  >
-                    {cat.name}
-                  </MenuItem>
-                ))}
-                <MenuItem
-                  value="NEW_CATEGORY"
-                  sx={{ color: "primary.main", fontWeight: 700 }}
-                >
-                  + Create New
-                </MenuItem>
-              </TextField>
-            ) : (
-              <TextField
-                label="New Category"
-                name="categoryName"
-                fullWidth
-                value={formData.categoryName}
-                onChange={handleChange}
+                placeholder="0"
+                sx={fieldStyle}
                 InputProps={{
-                  sx: { borderRadius: 2, fontWeight: 600 },
-                  endAdornment: (
-                    <IconButton
-                      size="small"
-                      onClick={() => setShowNewCategory(false)}
-                    >
-                      <X size={16} />
-                    </IconButton>
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <DollarSign size={18} color="#94a3b8" />
+                    </InputAdornment>
                   ),
                 }}
               />
-            )}
-          </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              {!showNewCategory ? (
+                <TextField
+                  label="Category"
+                  name="categoryName"
+                  select
+                  fullWidth
+                  value={formData.categoryName}
+                  onChange={handleChange}
+                  sx={fieldStyle}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Layers size={18} color="#94a3b8" />
+                      </InputAdornment>
+                    ),
+                  }}
+                >
+                  {categories.map((cat) => (
+                    <MenuItem
+                      key={cat.id}
+                      value={cat.name}
+                      sx={{ fontWeight: 500 }}
+                    >
+                      {cat.name}
+                    </MenuItem>
+                  ))}
+                  <MenuItem
+                    value="NEW_CATEGORY"
+                    sx={{ color: "primary.main", fontWeight: 700 }}
+                  >
+                    + Create New Category
+                  </MenuItem>
+                </TextField>
+              ) : (
+                <TextField
+                  label="New Category"
+                  name="categoryName"
+                  fullWidth
+                  value={formData.categoryName}
+                  onChange={handleChange}
+                  placeholder="e.g. Desserts"
+                  sx={fieldStyle}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Layers size={18} color="#94a3b8" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <IconButton
+                        size="small"
+                        onClick={() => setShowNewCategory(false)}
+                        sx={{ color: "grey.400" }}
+                      >
+                        <X size={16} />
+                      </IconButton>
+                    ),
+                  }}
+                />
+              )}
+            </Grid>
+          </Grid>
 
+          {/* Badge — full width */}
+          <TextField
+            label="Badge"
+            name="badge"
+            fullWidth
+            value={formData.badge}
+            onChange={handleChange}
+            placeholder="e.g. Recommended, New, Best Seller"
+            sx={fieldStyle}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Award size={18} color="#94a3b8" />
+                </InputAdornment>
+              ),
+            }}
+          />
+
+          {/* Image URL + Preview */}
           <TextField
             label="Image URL"
             name="imageUrl"
@@ -206,16 +313,23 @@ export const AddEditDishModal = ({
             value={formData.imageUrl}
             onChange={handleChange}
             placeholder="https://images.unsplash.com/..."
-            InputProps={{ sx: { borderRadius: 2 } }}
+            sx={fieldStyle}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LinkIcon size={18} color="#94a3b8" />
+                </InputAdornment>
+              ),
+            }}
           />
 
-          {formData.imageUrl && (
+          {formData.imageUrl ? (
             <Box
               sx={{
                 position: "relative",
                 width: "100%",
-                height: 140,
-                borderRadius: 3,
+                height: 180,
+                borderRadius: "14px",
                 overflow: "hidden",
                 border: "1px solid",
                 borderColor: "grey.100",
@@ -232,63 +346,92 @@ export const AddEditDishModal = ({
                 }}
               />
             </Box>
+          ) : (
+            <Box
+              sx={{
+                width: "100%",
+                height: 120,
+                borderRadius: "14px",
+                border: "2px dashed",
+                borderColor: "grey.200",
+                bgcolor: "#fafafa",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
+              <ImageIcon size={28} color="#cbd5e1" />
+              <Typography
+                variant="caption"
+                sx={{ color: "grey.400", fontWeight: 600 }}
+              >
+                Paste an image URL above to preview
+              </Typography>
+            </Box>
           )}
 
-          <TextField
-            label="Badge"
-            name="badge"
-            fullWidth
-            value={formData.badge}
-            onChange={handleChange}
-            placeholder="e.g. Recommended"
-            InputProps={{ sx: { borderRadius: 2 } }}
-          />
-
+          {/* Description */}
           <TextField
             label="Description"
             name="description"
             fullWidth
             multiline
-            rows={2}
+            rows={3}
             value={formData.description}
             onChange={handleChange}
-            placeholder="Briefly describe this dish..."
-            InputProps={{ sx: { borderRadius: 2 } }}
+            placeholder="Briefly describe this dish — ingredients, flavors, etc."
+            sx={fieldStyle}
           />
         </Box>
       </DialogContent>
 
+      <Divider />
+
+      {/* Actions */}
       <DialogActions
-        sx={{ px: 3, pb: 4, pt: 2, flexDirection: "column", gap: 1.5 }}
+        sx={{
+          px: { xs: 2.5, sm: 3.5 },
+          py: 2.5,
+          gap: 1.5,
+        }}
       >
         <Button
-          fullWidth
-          variant="contained"
-          onClick={handleSubmit}
-          sx={{
-            py: 1.5,
-            borderRadius: 1,
-            textTransform: "none",
-            fontWeight: 700,
-            fontSize: "1rem",
-            boxShadow: "0 10px 20px -5px rgba(249,115,22,0.3)",
-          }}
-        >
-          {dish ? "Update Dish" : "Create Item"}
-        </Button>
-        <Button
-          fullWidth
           onClick={onClose}
           sx={{
             color: "grey.500",
             textTransform: "none",
             fontWeight: 700,
+            px: 3,
+            borderRadius: "10px",
             border: "1px solid",
             borderColor: "grey.200",
-            "&:hover": { bgcolor: "transparent", color: "grey.700" },
+            "&:hover": { bgcolor: "grey.50", color: "grey.700" },
           }}
         >
           Cancel
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disableElevation
+          sx={{
+            px: 4,
+            py: 1.2,
+            borderRadius: "10px",
+            textTransform: "none",
+            fontWeight: 700,
+            fontSize: "0.95rem",
+            background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+            boxShadow: "0 8px 20px -4px rgba(249,115,22,0.3)",
+            "&:hover": {
+              background: "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+              boxShadow: "0 10px 24px -4px rgba(249,115,22,0.4)",
+            },
+          }}
+        >
+          {dish ? "Save Changes" : "Create Dish"}
         </Button>
       </DialogActions>
     </Dialog>

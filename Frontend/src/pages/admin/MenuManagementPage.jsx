@@ -133,6 +133,7 @@ const MenuManagementPage = () => {
       }
     } catch (error) {
       toast.error("Failed to delete dish");
+      console.error("Delete error:", error);
     }
   };
 

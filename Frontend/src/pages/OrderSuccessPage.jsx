@@ -15,7 +15,7 @@ const OrderSuccessPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { width, height } = useWindowSize();
-  const { clearCart } = useCartStore();
+  useCartStore();
 
   const [orderId] = useState(() => {
     return (
@@ -32,9 +32,9 @@ const OrderSuccessPage = () => {
   const formatTime = (iso) =>
     iso
       ? new Date(iso).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
+        hour: "2-digit",
+        minute: "2-digit",
+      })
       : "ASAP";
 
   return (

@@ -14,7 +14,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TablePagination,
 } from "@mui/material";
 import {
@@ -72,6 +71,7 @@ const SubscriptionManagementPage = () => {
       }
     } catch (error) {
       toast.error("Failed to cancel subscription");
+      console.error("Cancellation error:", error.message);
     }
   };
 

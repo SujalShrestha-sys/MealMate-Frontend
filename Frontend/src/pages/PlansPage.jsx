@@ -20,13 +20,11 @@ const PlansPage = () => {
     const loadData = async () => {
       setIsLoading(true);
       try {
-        // 1. Fetch all plans
         const plansRes = await subscriptionService.getPlans();
         if (plansRes.success) {
           setPlans(plansRes.data);
         }
 
-        // 2. Fetch my subscription if logged in
         if (isLoggedIn) {
           try {
             const subRes = await subscriptionService.getMySubscription();
@@ -34,7 +32,9 @@ const PlansPage = () => {
               setMySubscription(subRes.data);
             }
           } catch (error) {
-            // 404 is expected if user has no subscription
+            if (error.response?.status !== 404) {
+              toast.error("Failed to load your subscription. Please refresh.");
+            }
             setMySubscription(null);
           }
         }
@@ -82,7 +82,7 @@ const PlansPage = () => {
                   }`}
                 >
                   {/* Decorative Background Icon */}
-                  <div className="absolute right-[-20px] top-[-20px] opacity-5 group-hover:scale-110 transition-transform duration-700">
+                  <div className="absolute -right-5 -top-5 opacity-5 group-hover:scale-110 transition-transform duration-700">
                     <Zap size={160} />
                   </div>
 
