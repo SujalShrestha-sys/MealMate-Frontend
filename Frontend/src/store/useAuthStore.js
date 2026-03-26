@@ -18,7 +18,8 @@ const getInitialUser = () => {
 
 const useAuthStore = create((set) => ({
   isLoggedIn: !!(
-    localStorage.getItem("accessToken") || localStorage.getItem("token")
+    (localStorage.getItem("accessToken") || localStorage.getItem("token")) &&
+    localStorage.getItem("user")
   ),
   user: getInitialUser(),
 

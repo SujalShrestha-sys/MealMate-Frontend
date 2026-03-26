@@ -13,6 +13,7 @@ import Skeleton from "../components/common/Skeleton";
 import { motion } from "motion/react";
 import { ChevronRight } from "lucide-react";
 import dishService from "../api/services/dish.service";
+import SEO from "../components/common/SEO";
 
 const FoodDetailsPage = () => {
   const { fetchCart, getQuantity, updateQuantity } = useCartStore();
@@ -51,6 +52,13 @@ const FoodDetailsPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <SEO 
+        title={product ? product.name : "Loading Dish..."}
+        description={product ? product.description : "Explore delicious, healthy meal options at MealMate."}
+        ogImage={product?.image}
+        ogType="product"
+        keywords={`${product?.name || "dish"}, healthy meal, meal prep, food delivery`}
+      />
       <Navbar />
 
       <main className="flex-1 pt-24 pb-12 px-4 sm:px-6 lg:px-8">

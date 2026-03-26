@@ -8,9 +8,16 @@ import StreamliningSection from "../components/landing/StreamliningSection";
 import MealTimeSection from "../components/landing/MealTimeSection";
 import SubscriptionSection from "../components/landing/SubscriptionSection";
 
+import SEO from "../components/common/SEO";
+
 const LandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Home"
+        description="MealMate brings chef-prepared, healthy meals directly to your door. Explore our flexible plans and start your journey to effortless healthy eating today."
+        keywords="meal delivery, healthy meals, fitness food, meal planning, MealMate home"
+      />
       <Navbar />
       <main className="flex-1">
         <HeroSection />

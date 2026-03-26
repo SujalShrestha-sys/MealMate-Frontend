@@ -4,6 +4,7 @@ import Footer from "../components/common/Footer";
 import HeroSection from "../components/plans/HeroSection";
 import PlanCard from "../components/plans/PlanCard";
 import { motion, AnimatePresence } from "motion/react";
+import SEO from "../components/common/SEO";
 import subscriptionService from "../api/services/subscription.service";
 import useAuthStore from "../store/useAuthStore";
 import { Loader2, Zap, Clock } from "lucide-react";
@@ -57,6 +58,11 @@ const PlansPage = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      <SEO 
+        title="Meal Plans"
+        description="Choose from our flexible weekly and monthly meal plans. Designed for busy lifestyles, our plans offer healthy, chef-prepared meals with zero commitment."
+        keywords="meal subscriptions, flexible meal plans, student food plans, healthy eating subscription"
+      />
       <Navbar />
 
       {/* Hero Section Component */}

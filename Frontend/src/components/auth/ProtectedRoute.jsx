@@ -11,7 +11,7 @@ export const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { isLoggedIn, user } = useAuthStore();
   const location = useLocation();
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || !user) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

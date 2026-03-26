@@ -40,19 +40,20 @@ const CheckoutPage = () => {
         const response = await subscriptionService.getMySubscription();
         if (response.success) {
           const subData = response.data;
-          setSubscription(subData);
-          
-          // Auto-select subscription if valid
-          if (subData.status === "ACTIVE" && subData.remainingMeals > 0) {
-            setSelectedMethod("SUBSCRIPTION");
+
+          if (subData) {
+            setSubscription(subData);
+
+            // Auto-select subscription if valid
+            if (subData.status === "ACTIVE" && subData.remainingMeals > 0) {
+              setSelectedMethod("SUBSCRIPTION");
+            }
+          } else {
+            setSubscription(null);
           }
         }
       } catch (error) {
-        // Only show error if it's not a 404 (user doesn't have a plan)
-        if (error.response?.status !== 404) {
-          toast.error("Failed to fetch subscription. Please try again.");
-          console.error("Subscription fetch error:", error);
-        }
+        // No subscription found or other error - normal for non-subscribers
         setSubscription(null);
       }
     };
@@ -72,6 +73,11 @@ const CheckoutPage = () => {
       toast.error("Please select a pickup slot first!");
       return;
     }
+    if (!user) {
+      toast.error("Please login to place an order.");
+      navigate("/login");
+      return;
+    }
     if (items.length === 0) {
       toast.error("Your cart is empty!");
       return;
@@ -84,8 +90,8 @@ const CheckoutPage = () => {
 
     try {
       const orderResponse = await orderService.createOrder({
-        userId: user.id,
-        pickupSlotId: selectedSlot.id,
+        userId: user?.id,
+        pickupSlotId: selectedSlot?.id,
         method,
         items: items.map((item) => ({
           dishId: item.dishId,

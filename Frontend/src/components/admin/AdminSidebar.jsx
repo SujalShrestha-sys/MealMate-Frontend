@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   ClipboardList,
   UtensilsCrossed,
+  MessageSquare,
   LogOut,
   Package,
   Sparkles,
@@ -25,12 +26,13 @@ import useAuthStore from "../../store/useAuthStore";
 // Sidebar navigation items
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/admin/dashboard" },
-  { label: "User Management", icon: Users, path: "/admin/users" },
-  { label: "Inventory", icon: Package, path: "/admin/inventory" },
   { label: "Menu", icon: UtensilsCrossed, path: "/admin/menu" },
   { label: "Orders", icon: ClipboardList, path: "/admin/orders" },
-  { label: "Subscriptions", icon: Sparkles, path: "/admin/subscriptions" },
   { label: "Slot Management", icon: Clock, path: "/admin/slots" },
+  { label: "User Management", icon: Users, path: "/admin/users" },
+  { label: "Inventory", icon: Package, path: "/admin/inventory" },
+  { label: "Subscriptions", icon: Sparkles, path: "/admin/subscriptions" },
+  { label: "Live Chat", icon: MessageSquare, path: "/admin/chat" },
 ];
 
 const AdminSidebar = ({ activePath = "/admin/dashboard" }) => {

@@ -6,6 +6,7 @@ import MenuFilters from "../components/menu/MenuFilters";
 import MenuGrid from "../components/menu/MenuGrid";
 import PromoBanner from "../components/menu/PromoBanner";
 import { motion } from "motion/react";
+import SEO from "../components/common/SEO";
 
 import dishService from "../api/services/dish.service";
 import categoryService from "../api/services/category.service";
@@ -93,6 +94,11 @@ const MenuPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
+      <SEO 
+        title="Menu"
+        description="Explore our wide variety of chef-prepared, healthy meals. From vegetarian delights to protein-packed bowls, find the perfect dish for your lifestyle."
+        keywords="meal menu, healthy food, food delivery menu, nutritionist approved meals"
+      />
       <Navbar />
       <main className="flex-1 pt-22 pb-20">
         {/* Promotional Banner */}

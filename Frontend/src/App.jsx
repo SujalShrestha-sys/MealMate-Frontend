@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
+import ChatManagementPage from "./pages/admin/ChatManagementPage.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import MenuPage from "./pages/MenuPage.jsx";
 import PlansPage from "./pages/PlansPage.jsx";
@@ -202,6 +203,14 @@ function App() {
             element={
               <ProtectedRoute adminOnly>
                 <SlotManagementPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/chat"
+            element={
+              <ProtectedRoute adminOnly>
+                <ChatManagementPage />
               </ProtectedRoute>
             }
           />
