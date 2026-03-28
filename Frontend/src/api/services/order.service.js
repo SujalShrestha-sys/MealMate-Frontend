@@ -12,8 +12,8 @@ const orderService = {
   },
 
   // Get all orders (Admin)
-  getAllOrders: () => {
-    return apiClient.get("/admin/orders");
+  getAllOrders: (config = {}) => {
+    return apiClient.get("/admin/orders", config);
   },
 
   // Update order status (Admin)

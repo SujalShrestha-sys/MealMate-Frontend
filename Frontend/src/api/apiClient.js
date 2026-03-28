@@ -2,11 +2,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 // Create axios instance
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
+  baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
   withCredentials: true, // needed for httpOnly refresh token cookie
-  timeout: 10000,
+  timeout: 15000,
 });
 
 //Attach access token to every request
@@ -86,8 +89,23 @@ apiClient.interceptors.response.use(
     // ── Show error toasts for other statuses ──
     if (status === 403) toast.error("You don't have permission.");
     else if (status === 404) toast.error("Resource not found.");
-    else if (status === 500) toast.error("Server error. Try again later.");
-    else if (!error.response)
+    else if (status === 500) {
+      if (
+        message.includes("Foreign key constraint violated") ||
+        message.includes("_fkey")
+      ) {
+        toast.error(
+          "Database constraint error. This usually happens when trying to delete records with related data.",
+          { duration: 6000 },
+        );
+      } else if (message.includes("userId")) {
+        toast.error("Session mismatch. Please log out and back in.", {
+          duration: 5000,
+        });
+      } else {
+        toast.error("Server error. Try again later.");
+      }
+    } else if (!error.response)
       toast.error("Network error. Check your connection.");
     else toast.error(message);
 

@@ -42,7 +42,11 @@ const OrderManagementPage = () => {
       }
     } catch (error) {
       console.error("Failed to fetch orders:", error);
-      toast.error("Failed to fetch orders");
+      // Only show error if it's a real failure, not just "not found"
+      if (error !== "No orders found") {
+        toast.error("Failed to fetch orders");
+      }
+      setOrders([]);
     } finally {
       setLoading(false);
     }

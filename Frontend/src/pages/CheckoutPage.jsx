@@ -53,7 +53,10 @@ const CheckoutPage = () => {
           }
         }
       } catch (error) {
-        // No subscription found or other error - normal for non-subscribers
+        console.log(
+          "No active subscription or failed to fetch:",
+          error.message,
+        );
         setSubscription(null);
       }
     };
@@ -78,6 +81,7 @@ const CheckoutPage = () => {
       navigate("/login");
       return;
     }
+
     if (items.length === 0) {
       toast.error("Your cart is empty!");
       return;
@@ -158,7 +162,7 @@ const CheckoutPage = () => {
       }
     } catch (error) {
       toast.dismiss(loadingToast);
-      console.error("Order error:", error);
+      console.error("Order error:", error.message);
       toast.error("Something went wrong. Please try again.");
     } finally {
       setIsProcessing(false);

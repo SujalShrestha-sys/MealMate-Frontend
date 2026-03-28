@@ -57,13 +57,6 @@ const SlotModals = ({ mode, open, onClose, slot, onSuccess, selectedDate }) => {
     }
   }, [slot, open, mode]);
 
-  const getStatusColor = (current, max) => {
-    const percent = (current / max) * 100;
-    if (percent === 0) return "#f97316";
-    if (percent >= 100) return "#ef4444";
-    if (percent > 80) return "#ea580c";
-    return "#f97316";
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -117,7 +110,7 @@ const SlotModals = ({ mode, open, onClose, slot, onSuccess, selectedDate }) => {
       onSuccess();
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -139,7 +132,7 @@ const SlotModals = ({ mode, open, onClose, slot, onSuccess, selectedDate }) => {
       onSuccess();
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
     } finally {
       setLoading(false);
     }

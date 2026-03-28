@@ -26,7 +26,7 @@ const useCartStore = create((set, get) => ({
         set({ items: response.data.items });
       }
     } catch (error) {
-      console.error("Failed to fetch cart:", error);
+      console.error("Failed to fetch cart:", error.message);
     } finally {
       set({ isLoading: false });
     }

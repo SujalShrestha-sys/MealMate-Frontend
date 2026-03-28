@@ -31,7 +31,7 @@ const useChatStore = create((set, get) => ({
       console.log("Connected to chat socket");
       set({ isConnected: true });
       // Join its own room for notifications
-      socket.emit("join", userId);
+      socket.emit("user_online", userId);
     });
 
     socket.on("disconnect", () => {
@@ -112,7 +112,7 @@ const useChatStore = create((set, get) => ({
     if (conversation) {
       // Join new room
       if (socket) {
-        socket.emit("join", conversation.id);
+        socket.emit("join_conversation", conversation.id);
       }
 
       // Fetch messages
