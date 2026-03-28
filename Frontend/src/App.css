@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
 @import "@fontsource-variable/geist";
 
 html {
@@ -15,7 +15,7 @@ html {
 /* Smooth scrolling and global defaults */
 html {
   scroll-behavior: smooth;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #ffffff;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
@@ -75,12 +75,16 @@ section[id] {
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 theme {
-  --font-sans: 'Geist Variable', 'Inter', sans-serif;
+  --font-sans: "Geist Variable", "Inter", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }

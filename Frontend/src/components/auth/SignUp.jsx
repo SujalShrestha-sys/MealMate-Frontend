@@ -26,12 +26,22 @@ const roleConfigs = {
     ],
     welcomeTitle: "Student Registration",
     welcomeSubtitle: "Join 1000+ students already saving time with MealMate.",
+    primaryColor: "green",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600",
+    borderColor: "border-green-100",
+    dotColor: "bg-green-500",
+    linkColor: "text-green-600 hover:text-green-700",
+    checkboxColor: "text-green-600 accent-green-600 focus:ring-green-500",
+    benefitIcon: "text-emerald-300",
+    benefitBg: "bg-emerald-400/20",
+    benefitText: "text-green-100/90",
   },
   teacher: {
     title: (
       <>
         Excellence in dining for <br />
-        <span className="text-emerald-300">our academic staff.</span>
+        <span className="text-sky-300">our academic staff.</span>
       </>
     ),
     subtitle:
@@ -45,12 +55,22 @@ const roleConfigs = {
     welcomeTitle: "Faculty Sign Up",
     welcomeSubtitle:
       "Create your professional account for priority campus dining.",
+    primaryColor: "blue",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-600",
+    borderColor: "border-blue-100",
+    dotColor: "bg-blue-500",
+    linkColor: "text-blue-600 hover:text-blue-700",
+    checkboxColor: "text-blue-600 accent-blue-600 focus:ring-blue-500",
+    benefitIcon: "text-sky-300",
+    benefitBg: "bg-sky-400/20",
+    benefitText: "text-blue-100/90",
   },
   admin: {
     title: (
       <>
         Secure access for <br />
-        <span className="text-emerald-300">campus administrators.</span>
+        <span className="text-violet-300">campus administrators.</span>
       </>
     ),
     subtitle:
@@ -64,6 +84,16 @@ const roleConfigs = {
     welcomeTitle: "Admin Registration",
     welcomeSubtitle:
       "Standardized administrative access for dining management.",
+    primaryColor: "indigo",
+    bgColor: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    borderColor: "border-indigo-100",
+    dotColor: "bg-indigo-500",
+    linkColor: "text-indigo-600 hover:text-indigo-700",
+    checkboxColor: "text-indigo-600 accent-indigo-600 focus:ring-indigo-500",
+    benefitIcon: "text-violet-300",
+    benefitBg: "bg-violet-400/20",
+    benefitText: "text-indigo-100/90",
   },
 };
 
@@ -80,7 +110,6 @@ const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Extract role
   const queryParams = new URLSearchParams(location.search);
   const role = queryParams.get("role") || "student";
   const config = roleConfigs[role] || roleConfigs.student;
@@ -141,10 +170,12 @@ const SignUp = () => {
     <div className="flex flex-col gap-4">
       {config.benefits.map((benefit) => (
         <div key={benefit} className="flex items-center gap-3">
-          <div className="w-6 h-6 rounded-full bg-emerald-400/20 flex items-center justify-center shrink-0">
-            <Check size={14} className="text-emerald-300" />
+          <div
+            className={`w-6 h-6 rounded-full ${config.benefitBg} flex items-center justify-center shrink-0`}
+          >
+            <Check size={14} className={config.benefitIcon} />
           </div>
-          <span className="text-green-100/90 text-sm">{benefit}</span>
+          <span className={`${config.benefitText} text-sm`}>{benefit}</span>
         </div>
       ))}
     </div>
@@ -156,19 +187,24 @@ const SignUp = () => {
       title={config.title}
       subtitle={config.subtitle}
       extraLeftContent={leftContent}
+      role={role}
     >
-      <div className="mb-6 text-center lg:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-600 text-[10px] font-bold uppercase tracking-wider mb-4 border border-green-100">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+      <div className="mb-4 text-center lg:text-left">
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${config.bgColor} ${config.textColor} text-[10px] font-bold uppercase tracking-wider mb-3 border ${config.borderColor}`}
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${config.dotColor} animate-pulse`}
+          />
           {role} Portal
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+        <h2 className="text-3xl font-bold text-gray-900 mb-1">
           {config.welcomeTitle}
         </h2>
         <p className="text-gray-500">{config.welcomeSubtitle}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <AuthInput
           label="Full Name"
           name="fullName"
@@ -176,6 +212,7 @@ const SignUp = () => {
           value={formData.fullName}
           onChange={handleChange}
           icon={User}
+          role={role}
           required
         />
 
@@ -187,6 +224,7 @@ const SignUp = () => {
           value={formData.email}
           onChange={handleChange}
           icon={Mail}
+          role={role}
           required
         />
 
@@ -198,11 +236,12 @@ const SignUp = () => {
           value={formData.password}
           onChange={handleChange}
           icon={Lock}
+          role={role}
           rightElement={
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-gray-400 hover:text-green-600 transition-colors duration-200"
+              className={`text-gray-400 ${config.linkColor} transition-colors duration-200`}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -212,7 +251,7 @@ const SignUp = () => {
 
         {/* Password Strength Bar */}
         {formData.password && (
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2 -mt-1">
             <div className="flex-1 flex gap-1">
               {[1, 2, 3, 4, 5].map((i) => (
                 <div
@@ -239,11 +278,12 @@ const SignUp = () => {
           value={formData.confirmPassword}
           onChange={handleChange}
           icon={Lock}
+          role={role}
           rightElement={
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="text-gray-400 hover:text-green-600 transition-colors duration-200"
+              className={`text-gray-400 ${config.linkColor} transition-colors duration-200`}
             >
               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -251,39 +291,41 @@ const SignUp = () => {
           required
         />
 
-        <label className="flex items-start gap-2.5 cursor-pointer select-none mt-1">
+        <label className="flex items-start gap-2.5 cursor-pointer select-none">
           <input
             type="checkbox"
             checked={agreedToTerms}
             onChange={(e) => setAgreedToTerms(e.target.checked)}
-            className="w-4 h-4 mt-0.5 rounded border-gray-300 text-green-600 focus:ring-green-500 accent-green-600"
+            className={`w-4 h-4 mt-0.5 rounded border-gray-300 ${config.checkboxColor}`}
             required
           />
           <span className="text-sm text-gray-500 leading-snug">
             I agree to the{" "}
             <a
               href="#"
-              className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200"
+              className={`font-medium ${config.linkColor} transition-colors duration-200`}
             >
               Terms of Service
             </a>{" "}
             and{" "}
             <a
               href="#"
-              className="text-green-600 font-medium hover:text-green-700 transition-colors duration-200"
+              className={`font-medium ${config.linkColor} transition-colors duration-200`}
             >
               Privacy Policy
             </a>
           </span>
         </label>
 
-        <AuthButton type="submit">Create Account</AuthButton>
+        <AuthButton type="submit" role={role}>
+          Create Account
+        </AuthButton>
       </form>
-      <p className="text-center text-gray-500 mt-7">
+      <p className="text-center text-gray-500 mt-5">
         Already have an account?{" "}
         <Link
           to={`/login?role=${role}`}
-          className="text-green-600 font-semibold hover:text-green-700 transition-colors duration-200"
+          className={`font-semibold ${config.linkColor} transition-colors duration-200`}
         >
           Sign in
         </Link>

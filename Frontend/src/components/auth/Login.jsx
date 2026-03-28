@@ -26,13 +26,20 @@ const roleConfigs = {
     ],
     welcomeTitle: "Student Login",
     welcomeSubtitle: "Access your personalized student meal dashboard.",
+    primaryColor: "green",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600",
+    borderColor: "border-green-100",
+    dotColor: "bg-green-500",
+    linkColor: "text-green-600 hover:text-green-700",
+    checkboxColor: "text-green-600 accent-green-600 focus:ring-green-500",
   },
 
   teacher: {
     title: (
       <>
         Priority dining for <br />
-        <span className="text-emerald-300">our dedicated faculty.</span>
+        <span className="text-sky-300">our dedicated faculty.</span>
       </>
     ),
     subtitle:
@@ -45,13 +52,20 @@ const roleConfigs = {
     ],
     welcomeTitle: "Teacher Portal",
     welcomeSubtitle: "Sign in to manage your faculty meal preferences.",
+    primaryColor: "blue",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-600",
+    borderColor: "border-blue-100",
+    dotColor: "bg-blue-500",
+    linkColor: "text-blue-600 hover:text-blue-700",
+    checkboxColor: "text-blue-600 accent-blue-600 focus:ring-blue-500",
   },
 
   admin: {
     title: (
       <>
         Full control over <br />
-        <span className="text-emerald-300">campus operations.</span>
+        <span className="text-violet-300">campus operations.</span>
       </>
     ),
     subtitle:
@@ -64,6 +78,13 @@ const roleConfigs = {
     ],
     welcomeTitle: "Admin Console",
     welcomeSubtitle: "Secure access to MealMate operational controls.",
+    primaryColor: "indigo",
+    bgColor: "bg-indigo-50",
+    textColor: "text-indigo-600",
+    borderColor: "border-indigo-100",
+    dotColor: "bg-indigo-500",
+    linkColor: "text-indigo-600 hover:text-indigo-700",
+    checkboxColor: "text-indigo-600 accent-indigo-600 focus:ring-indigo-500",
   },
 };
 
@@ -84,7 +105,6 @@ const Login = () => {
     try {
       const response = await authService.login({ email, password });
 
-      // Check if the user's role matches the current portal role
       const userRole = response.user.role?.toLowerCase();
       if (userRole !== role) {
         toast.error(
@@ -95,8 +115,7 @@ const Login = () => {
 
       login(response.user);
       toast.success(response.message || "Logged in successfully");
-      
-      // Redirect based on role
+
       if (response.user.role?.toLowerCase() === "admin") {
         navigate("/admin/dashboard");
       } else {
@@ -113,9 +132,7 @@ const Login = () => {
         <React.Fragment key={index}>
           <div>
             <p className="text-2xl font-semibold text-white">{stat.value}</p>
-            <p className="text-sm font-medium text-green-200/80">
-              {stat.label}
-            </p>
+            <p className="text-sm font-medium text-white/60">{stat.label}</p>
           </div>
           {index < config.stats.length - 1 && (
             <div className="w-px bg-white/20" />
@@ -131,10 +148,15 @@ const Login = () => {
       title={config.title}
       subtitle={config.subtitle}
       extraLeftContent={leftContent}
+      role={role}
     >
       <div className="mb-8 text-center lg:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-600 text-[10px] font-bold uppercase tracking-wider mb-4 border border-green-100">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+        <div
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${config.bgColor} ${config.textColor} text-[10px] font-bold uppercase tracking-wider mb-4 border ${config.borderColor}`}
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${config.dotColor} animate-pulse`}
+          />
           {role} Portal
         </div>
         <h2 className="text-3xl font-bold text-gray-900 mb-2">
@@ -152,6 +174,7 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           icon={Mail}
+          role={role}
           required
         />
 
@@ -163,11 +186,12 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           icon={Lock}
+          role={role}
           rightElement={
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-gray-400 hover:text-green-600 transition-colors duration-200"
+              className={`text-gray-400 ${config.linkColor} transition-colors duration-200`}
             >
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -179,26 +203,28 @@ const Login = () => {
           <label className="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500 accent-green-600"
+              className={`w-4 h-4 rounded border-gray-300 ${config.checkboxColor}`}
             />
             <span className="text-sm text-gray-600">Remember me</span>
           </label>
           <Link
             to="/forgot-password"
-            className="text-sm font-semibold text-green-600 hover:text-green-700 transition-colors duration-200"
+            className={`text-sm font-semibold ${config.linkColor} transition-colors duration-200`}
           >
             Forgot Password?
           </Link>
         </div>
 
-        <AuthButton type="submit">Sign In</AuthButton>
+        <AuthButton type="submit" role={role}>
+          Sign In
+        </AuthButton>
       </form>
 
       <p className="text-center text-gray-500 mt-8">
         Don't have an account?{" "}
         <Link
-          to="/SignUp"
-          className="text-green-600 font-semibold hover:text-green-700 transition-colors duration-200"
+          to={`/SignUp?role=${role}`}
+          className={`font-semibold ${config.linkColor} transition-colors duration-200`}
         >
           Create account
         </Link>
