@@ -33,25 +33,15 @@ import "./App.css";
 import useCartStore from "./store/useCartStore";
 import useAuthStore from "./store/useAuthStore";
 import { useEffect, useMemo } from "react";
-import { wakeUpServer } from "./api/apiClient";
 
 function App() {
   const location = useLocation();
   const { fetchCart } = useCartStore();
   const { isLoggedIn } = useAuthStore();
 
-  // Wake up the backend server immediately when the app loads.
-  // This way the server is ready by the time the user clicks "Login".
   useEffect(() => {
-    wakeUpServer();
-  }, []);
-
-  // Only fetch cart if user is logged in (avoids unnecessary failed request)
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchCart();  
-    }
-  }, [isLoggedIn, fetchCart]);
+    fetchCart();
+  }, [fetchCart]);
 
   const isAuthPage = useMemo(() => {
     const path = location.pathname.toLowerCase();
