@@ -18,16 +18,16 @@ import adminService from "../../api/services/admin.service";
 
 const MotionPaper = motion.create(Paper);
 
-const tabs = ["All", "Pending", "Ready", "Collected"];
+const tabs = ["All", "Pending", "Ready", "Completed", "Cancelled"];
 
 // Chip color map
 const chipConfig = {
-  ready: { color: "#16a34a", bg: "#f0fdf4" },
   pending: { color: "#ea580c", bg: "#fff7ed" },
-  collected: { color: "#64748b", bg: "#f1f5f9" },
   confirmed: { color: "#2563eb", bg: "#eff6ff" },
   preparing: { color: "#d97706", bg: "#fffbeb" },
-  ready_for_pickup: { color: "#16a34a", bg: "#f0fdf4" },
+  ready: { color: "#16a34a", bg: "#f0fdf4" },
+  completed: { color: "#64748b", bg: "#f1f5f9" },
+  cancelled: { color: "#16a34a", bg: "#f0fdf4" },
 };
 
 const LiveOrdersTable = () => {
